@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Romance of the Three Kingdoms — Translation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ---- index page ---- */
+    .index-list { list-style: none; padding: 0; max-width: 720px; margin: 0 auto; }
+    .index-list .chapter-label.untranslated { color: var(--muted); }
+    .index-list li {
+      padding: 0.55rem 0;
+      border-bottom: 1px dotted var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    .progress { font-size: 0.85rem; color: var(--muted); }
+    .progress.done { color: var(--done); }
+    .progress.in-progress { color: var(--in-progress); }
+
+    /* ---- chapter page ---- */
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .chapter-nav .nav-link.untranslated { color: var(--muted); }
+    .chapter-nav .nav-tag { font-size: 0.8rem; font-style: italic; }
+    .chapter-title {
+      text-align: center;
+      margin: 0.5rem auto 2rem;
+      max-width: 760px;
+    }
+    .chapter-title h2 {
+      font-weight: normal;
+      font-size: 1.25rem;
+      margin: 0 0 0.4rem;
+      line-height: 1.4;
+    }
+    .chapter-title h2.clickable {
+      display: inline-block;
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.12s;
+    }
+    .chapter-title h2.clickable:hover { background: rgba(106, 77, 42, 0.05); }
+    .chapter-title h2.clickable.selected { background: var(--highlight); }
+
+    .corner-toolbar {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      display: flex;
+      gap: 0.4rem;
+    }
+    .popup-host { position: relative; }
+    .contact-host {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 100;
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .icon-button {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 2.2rem;
+      height: 2.2rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 0;
+    }
+    a.icon-button { text-decoration: none; }
+    .icon-button:hover { background: var(--bg); }
+    .icon-button svg { width: 1.15rem; height: 1.15rem; display: block; }
+    /* "opens in a new tab" cue: small external-link badge on the icon corner */
+    .icon-button.external { position: relative; }
+    .icon-button.external::after {
+      content: "\2197";          /* ↗ */
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 0.95rem;
+      height: 0.95rem;
+      font-size: 0.7rem;
+      line-height: 0.95rem;
+      text-align: center;
+      border-radius: 50%;
+      background: var(--link);
+      color: #fff;
+      box-shadow: 0 0 0 1.5px var(--bg);
+    }
+    .popup-panel {
+      position: absolute;
+      right: 0;
+      background: white;
+      border: 1px solid var(--border);
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      min-width: 14rem;
+    }
+    .popup-panel { top: calc(100% + 0.4rem); }
+    .popup-panel[hidden] { display: none; }
+    .popup-panel label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+    .popup-panel a { display: block; }
+    .contact-copy-row {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .contact-email { white-space: nowrap; }
+    .copy-button {
+      border: 0;
+      background: transparent;
+      color: var(--fg);
+      border-radius: 3px;
+      width: 1.35rem;
+      height: 1.35rem;
+      padding: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .copy-button:hover { color: var(--link); }
+    .copy-button svg { width: 0.78rem; height: 0.78rem; display: block; }
+    .settings-note { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
+    .units-panel { min-width: 27rem; top: auto; bottom: calc(100% + 0.4rem); }
+    #download-panel { min-width: 17rem; }
+    #download-panel a { white-space: nowrap; }
+    .units-title {
+      font-variant: small-caps;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-bottom: 0.3rem;
+    }
+    .units-table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+    }
+    .units-table th,
+    .units-table td {
+      text-align: left;
+      padding: 0.25rem 0.5rem 0.25rem 0;
+      vertical-align: baseline;
+      border-top: 1px dotted var(--border);
+    }
+    .units-table tr:first-child th,
+    .units-table tr:first-child td { border-top: 0; }
+    .units-table th { font-weight: bold; white-space: nowrap; }
+    .units-table td:nth-child(2) {
+      font-family: "Noto Serif SC", "Source Han Serif SC",
+                   "Songti SC", "SimSun", "STSong", serif;
+    }
+    .units-table td:nth-child(3) { color: var(--muted); white-space: nowrap; }
+    .units-table td:last-child { width: 100%; white-space: nowrap; }
+    .settings-row + .settings-row { margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px dotted var(--border); }
+
+    .chapter-layout {
+      display: grid;
+      grid-template-areas: "detail rhyme explanation";
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr) minmax(280px, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+    .detail-panel { grid-area: detail; }
+    .rhyme-column { grid-area: rhyme; }
+    .explanation-panel { grid-area: explanation; }
+    .detail-panel,
+    .explanation-panel {
+      position: sticky;
+      top: 1rem;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .detail-empty {
+      color: var(--muted);
+      font-style: italic;
+      border-left: 2px solid var(--border);
+      padding: 0.4rem 0 0.4rem 1rem;
+    }
+    .detail-section + .detail-section { margin-top: 1.5rem; }
+    .detail-label {
+      font-variant: small-caps;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .close-panel {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-variant: normal;
+      letter-spacing: 0;
+      font-size: 0.9rem;
+      line-height: 1;
+      padding: 0.1rem 0.2rem;
+    }
+    .close-panel:hover,
+    .close-panel:focus-visible { color: var(--text); }
+    .detail-text { margin: 0; }
+    .detail-text.original {
+      font-family: "Noto Serif SC", "Source Han Serif SC",
+                   "Songti SC", "SimSun", "STSong", serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+    .detail-text.untranslated { color: var(--muted); font-style: italic; }
+    .annotation-name { font-weight: bold; margin-bottom: 0.3rem; color: var(--fg); font-variant: normal; letter-spacing: normal; font-size: 1rem; }
+    .annotation-line { margin: 0; }
+    .annotation-line + .annotation-line { margin-top: 0.4rem; }
+
+    .tag {
+      cursor: pointer;
+      color: var(--link);
+      border-bottom: 1px dotted var(--link);
+      transition: background-color 0.12s;
+    }
+    .tag:hover { background: rgba(138, 58, 42, 0.08); }
+
+    a.external {
+      color: var(--link);
+      text-decoration: underline dotted;
+      text-underline-offset: 0.2em;
+    }
+    a.external:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+    a.external::after {
+      content: " \2197";
+      font-size: 0.75em;
+      vertical-align: super;
+      margin-left: 0.05em;
+    }
+
+    .rhyme-column { max-width: 760px; margin: 0 auto; width: 100%; }
+    .rhyme-para {
+      margin: 0 0 1.6rem;
+      padding: 0.7rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.12s;
+      border-left: 3px solid transparent;
+    }
+    .rhyme-para:hover { background: rgba(106, 77, 42, 0.05); }
+    .rhyme-para.selected {
+      background: var(--highlight);
+      border-left-color: var(--accent);
+    }
+    .rhyme-para.untranslated {
+      color: var(--muted);
+      font-style: italic;
+      cursor: default;
+    }
+    .rhyme-para.untranslated:hover { background: transparent; }
+    .rhyme-para.no-click { cursor: default; }
+    .rhyme-para.no-click:hover { background: transparent; }
+
+    @media (max-width: 1100px) {
+      .chapter-layout {
+        grid-template-areas:
+          "detail rhyme"
+          "explanation rhyme";
+        grid-template-columns: minmax(260px, 1fr) minmax(0, 1.7fr);
+        grid-template-rows: auto auto;
+      }
+      .detail-panel,
+      .explanation-panel {
+        position: static;
+        max-height: none;
+      }
+      .detail-panel { border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    }
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-areas:
+          "detail"
+          "explanation"
+          "rhyme";
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title-block">
+    <h1><a href="?">Romance of the Three Kingdoms</a></h1>
+    <div class="byline">
+      By Luo Guanzhong &middot;
+      Translated with AI assistance
+    </div>
+  </div>
+</header>
+
+<div class="corner-toolbar">
+  <div class="popup-host" id="downloads">
+    <button type="button" class="icon-button" id="download-toggle"
+            aria-label="Download" title="Download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    </button>
+    <div class="popup-panel" id="download-panel" hidden>
+      <div class="settings-row">
+        <a href="data/rhyme.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size"></span>)</a>
+        <div class="settings-note">Main text only.</div>
+      </div>
+      <div class="settings-row">
+        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size"></span>)</a>
+        <div class="settings-note">Main text with annotations.</div>
+      </div>
+    </div>
+  </div>
+  <div class="popup-host">
+    <button type="button" class="icon-button" id="contact-toggle"
+            aria-label="Email" title="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2"/>
+        <path d="m3 7 9 6 9-6"/>
+      </svg>
+    </button>
+    <div class="popup-panel" id="contact-panel" aria-label="Email address" hidden>
+      <div class="contact-copy-row">
+        <a class="contact-email" id="contact-email" href="mailto:ssamt@kaist.ac.kr">ssamt@kaist.ac.kr</a>
+        <button type="button" class="copy-button" id="copy-email"
+                aria-label="Copy email address" title="Copy email address">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+      <div class="settings-note" id="copy-status" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="popup-host">
+    <button type="button" class="icon-button" id="settings-toggle"
+            aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+    <div class="popup-panel" id="settings-panel" hidden>
+      <div class="settings-row">
+        <label>
+          <input type="checkbox" id="show-titles">
+          Show chapter titles
+        </label>
+        <div class="settings-note">Titles may contain spoilers.</div>
+      </div>
+      <div class="settings-row">
+        <label>
+          <input type="checkbox" id="show-sidebars">
+          Enable side panels
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-host">
+  <a class="icon-button external" href="map.html" target="_blank" rel="noopener"
+     aria-label="Map" title="Map">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/>
+      <line x1="9" y1="3" x2="9" y2="18"/>
+      <line x1="15" y1="6" x2="15" y2="21"/>
+    </svg>
+  </a>
+  <button type="button" class="icon-button" id="units-toggle"
+          aria-label="Chinese units" title="Chinese units">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <path d="M3 8h18a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+      <path d="M7 8v4M11 8v3M15 8v4M19 8v3"/>
+    </svg>
+  </button>
+  <div class="popup-panel units-panel" id="units-panel" hidden>
+    <div class="units-title">Ancient Chinese units</div>
+    <table class="units-table">
+      <tbody>
+        <tr><th>cun</th><td>寸</td><td>length</td><td>≈ 2.3 cm; ≈ 0.9 in</td></tr>
+        <tr><th>chi</th><td>尺</td><td>length</td><td>≈ 23 cm; ≈ 9 in; 10 cun</td></tr>
+        <tr><th>zhang</th><td>丈</td><td>length</td><td>≈ 2.3 m; ≈ 7.5 ft; 10 chi</td></tr>
+        <tr><th>li</th><td>里</td><td>distance</td><td>≈ 415 m; ≈ 0.26 mi</td></tr>
+        <tr><th>liang</th><td>兩</td><td>weight</td><td>≈ 14 g; ≈ 0.5 oz</td></tr>
+        <tr><th>jin</th><td>斤</td><td>weight</td><td>≈ 220 g; ≈ 7.8 oz; 16 liang</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<main id="app">Loading…</main>
+
+<script>
+// In the standalone HTML build, all data is embedded as window.BOOK_DATA
+// and the page works offline. On the live site, BOOK_DATA is undefined and
+// chapters are fetched on demand.
+const STANDALONE = typeof window.BOOK_DATA !== 'undefined';
+const DATA_LOAD_ID = STANDALONE ? '' : String(Date.now());
+// Standalone settings live in their own namespace so they don't pick up
+// state from the live site when both are served from the same origin.
+const SETTINGS_PREFIX = STANDALONE ? 'standalone:' : '';
+const ls = (key) => localStorage.getItem(SETTINGS_PREFIX + key);
+const lsSet = (key, value) => localStorage.setItem(SETTINGS_PREFIX + key, value);
+const ss = (key) => sessionStorage.getItem(SETTINGS_PREFIX + key);
+const ssSet = (key, value) => sessionStorage.setItem(SETTINGS_PREFIX + key, value);
+
+const params = new URLSearchParams(location.search);
+const SCROLL_KEY = 'scroll:' + location.pathname + location.search;
+const state = {
+  chapter: parseInt(params.get('ch'), 10) || null,
+  main: null,
+  chapterData: null,
+  selected: null,      // index of paragraph showing original/prose
+  annotationId: null,  // id of currently displayed annotation
+  annotationPara: null, // 1-based paragraph the displayed annotation was opened from
+};
+
+const settings = {
+  showTitles: ls('showTitles') === '1',
+  showSidebars: ls('showSidebars') !== '0',
+};
+
+const app = document.getElementById('app');
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+function renderText(text) {
+  return escapeHtml(text).replace(/\n/g, '<br>');
+}
+
+// Strip [display](id) tags down to plain display text.
+function stripTags(text) {
+  return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+}
+
+// Render text containing [display](target) markers into HTML. If target
+// is an http(s) URL, emit an external link; otherwise an internal
+// annotation tag.
+function renderTagged(text) {
+  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let html = '';
+  let last = 0;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    html += escapeHtml(text.slice(last, m.index)).replace(/\n/g, '<br>');
+    const surface = escapeHtml(m[1]);
+    const target = m[2];
+    if (/^https?:\/\//i.test(target)) {
+      html += `<a class="external" href="${escapeHtml(target)}" target="_blank" rel="noopener noreferrer">${surface}</a>`;
+    } else {
+      html += `<span class="tag" data-id="${escapeHtml(target)}">${surface}</span>`;
+    }
+    last = re.lastIndex;
+  }
+  html += escapeHtml(text.slice(last)).replace(/\n/g, '<br>');
+  return html;
+}
+
+function formatBytes(n) {
+  if (n >= 1024 * 1024) return (n / (1024 * 1024)).toFixed(1) + ' MB';
+  if (n >= 1024) return Math.round(n / 1024) + ' KB';
+  return n + ' B';
+}
+
+// Annotate each download link with its file size via a HEAD request (headers
+// only, no body downloaded). Skipped in the offline standalone, where the
+// data/ links don't resolve anyway.
+function showDownloadSizes() {
+  if (STANDALONE) return;
+  document.querySelectorAll('#download-panel .settings-row').forEach(row => {
+    const link = row.querySelector('a');
+    const target = row.querySelector('.dl-size');
+    if (!link || !target) return;
+    fetch(link.getAttribute('href'), { method: 'HEAD' })
+      .then(r => {
+        const len = r.ok ? r.headers.get('Content-Length') : null;
+        if (len) target.textContent = ', ' + formatBytes(Number(len));
+      })
+      .catch(() => {});
+  });
+}
+
+function liveDataUrl(path) {
+  return path + (path.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(DATA_LOAD_ID);
+}
+
+function fetchLiveData(path) {
+  return fetch(liveDataUrl(path), { cache: 'no-store' });
+}
+
+function isRefreshLoad() {
+  const nav = performance.getEntriesByType('navigation')[0];
+  if (nav) return nav.type === 'reload';
+  return performance.navigation && performance.navigation.type === 1;
+}
+
+let scrollSaveQueued = false;
+function saveScrollPosition() {
+  ssSet(SCROLL_KEY, String(Math.max(0, Math.round(window.scrollY))));
+}
+
+function queueSaveScrollPosition() {
+  if (scrollSaveQueued) return;
+  scrollSaveQueued = true;
+  requestAnimationFrame(() => {
+    scrollSaveQueued = false;
+    saveScrollPosition();
+  });
+}
+
+function restoreScrollPosition() {
+  if (!isRefreshLoad()) return;
+  const saved = parseInt(ss(SCROLL_KEY), 10);
+  if (!Number.isFinite(saved)) return;
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: saved, left: 0, behavior: 'auto' });
+  });
+}
+
+async function loadMain() {
+  if (STANDALONE) {
+    state.main = window.BOOK_DATA.main;
+    return;
+  }
+  const r = await fetchLiveData('data/main.json');
+  state.main = await r.json();
+}
+async function loadChapter(n) {
+  if (STANDALONE) {
+    state.chapterData = window.BOOK_DATA.chapters[n];
+    return;
+  }
+  const file = 'data/ch' + String(n).padStart(3, '0') + '.json';
+  const r = await fetchLiveData(file);
+  state.chapterData = await r.json();
+}
+
+function chapterStatus(c) {
+  const total = c.paragraphs;
+  if (c.rhyme === 0) return ['', 'untranslated'];
+  if (c.rhyme === total) return ['done', 'complete'];
+  return ['in-progress', 'in progress'];
+}
+
+function renderIndex() {
+  const list = state.main.chapters.map(c => {
+    const [cls, label] = chapterStatus(c);
+    const linkLabel = (settings.showTitles && c.title)
+      ? escapeHtml(c.title)
+      : ('Chapter ' + c.n);
+    const chapterLabel = c.rhyme === 0
+      ? `<span class="chapter-label untranslated">${linkLabel}</span>`
+      : `<a href="?ch=${c.n}">${linkLabel}</a>`;
+    return `<li>
+      ${chapterLabel}
+      <span class="progress ${cls}">${label}</span>
+    </li>`;
+  }).join('');
+  app.innerHTML = `<ul class="index-list">${list}</ul>`;
+}
+
+function renderDetail() {
+  const panel = document.getElementById('detail');
+  if (!panel) return;
+  if (state.selected === null) {
+    panel.innerHTML = '';
+    return;
+  }
+  let original, prose;
+  if (state.selected === 'title') {
+    const t = state.chapterData.title || {};
+    original = t.original;
+    prose = t.prose;
+  } else {
+    const p = state.chapterData.paragraphs[state.selected];
+    original = p.original;
+    prose = p.prose;
+  }
+  const origHtml = original
+    ? `<p class="detail-text original">${renderText(original)}</p>`
+    : `<p class="detail-text untranslated">—</p>`;
+  const proseHtml = prose
+    ? `<p class="detail-text">${renderText(prose)}</p>`
+    : `<p class="detail-text untranslated">—</p>`;
+  panel.innerHTML = `
+    <div class="detail-section">
+      <div class="detail-label">
+        <span>Original</span>
+        <button type="button" class="close-panel" data-close-panel="detail" aria-label="Close original and prose panel" title="Close">&times;</button>
+      </div>
+      ${origHtml}
+    </div>
+    <div class="detail-section">
+      <div class="detail-label">Prose</div>
+      ${proseHtml}
+    </div>`;
+}
+
+function renderExplanation() {
+  const panel = document.getElementById('explanation');
+  if (!panel) return;
+  const id = state.annotationId;
+  if (!id) {
+    panel.innerHTML = '';
+    return;
+  }
+  const ann = resolveAnnotation(id, state.annotationPara);
+  if (!ann) {
+    panel.innerHTML = '<div class="detail-empty">No annotation found.</div>';
+    return;
+  }
+  panel.innerHTML = `
+    <div class="detail-section">
+      <div class="detail-label">
+        <span class="annotation-name">${escapeHtml(ann.name)}</span>
+        <button type="button" class="close-panel" data-close-panel="explanation" aria-label="Close annotation panel" title="Close">&times;</button>
+      </div>
+      ${ann.description.split('\n').filter(line => line.trim() !== '').map(line => `<p class="detail-text annotation-line">${renderTagged(line)}</p>`).join('')}
+    </div>`;
+}
+
+function closeDetail() {
+  state.selected = null;
+  refreshSelection();
+  renderDetail();
+}
+
+function closeExplanation() {
+  state.annotationId = null;
+  renderExplanation();
+}
+
+// Resolve an annotation id to the description in effect at `para` (1-based
+// paragraph number within this chapter). Entries carry `versions`, each with
+// a `from` paragraph; pick the latest whose `from` <= para.
+function resolveAnnotation(id, para) {
+  const ann = (state.chapterData.annotations || {})[id];
+  if (!ann || !ann.versions || !ann.versions.length) return null;
+  const p = (typeof para === 'number') ? para : Infinity;
+  let chosen = ann.versions[0];
+  for (const v of ann.versions) {
+    if (v.from <= p) chosen = v;
+    else break;
+  }
+  return { name: chosen.name || ann.name, description: chosen.description };
+}
+
+function showAnnotation(id, para) {
+  // Clicking the already-open annotation deselects it — unless this click
+  // resolves to a different (e.g. later) version, in which case open that.
+  if (state.annotationId === id) {
+    const current = resolveAnnotation(id, state.annotationPara);
+    const next = resolveAnnotation(id, para);
+    if (current && next && current.description === next.description) {
+      state.annotationId = null;
+      renderExplanation();
+      return;
+    }
+  }
+  if (typeof para === 'number') state.annotationPara = para;
+  state.annotationId = id;
+  renderExplanation();
+}
+
+function refreshSelection() {
+  document.querySelectorAll('.rhyme-para').forEach(el => {
+    el.classList.toggle('selected', parseInt(el.dataset.index, 10) === state.selected);
+  });
+  const titleH2 = document.querySelector('.chapter-title h2.clickable');
+  if (titleH2) titleH2.classList.toggle('selected', state.selected === 'title');
+}
+
+function selectParagraph(i) {
+  const p = state.chapterData.paragraphs[i];
+  if (!p.rhyme) return;
+  state.selected = (state.selected === i) ? null : i;
+  refreshSelection();
+  renderDetail();
+}
+
+function selectTitle() {
+  state.selected = (state.selected === 'title') ? null : 'title';
+  refreshSelection();
+  renderDetail();
+}
+
+function renderChapter() {
+  const data = state.chapterData;
+  const chapterIndex = state.main.chapters.findIndex(c => c.n === data.n);
+  const prev = chapterIndex > 0 ? state.main.chapters[chapterIndex - 1].n : null;
+  const next = chapterIndex >= 0 && chapterIndex < state.main.chapters.length - 1
+    ? state.main.chapters[chapterIndex + 1].n
+    : null;
+  state.selected = null;
+  state.annotationId = null;
+  state.annotationPara = null;
+
+  const chapterLink = (n, label) => {
+    if (n === null) return '';
+    const meta = state.main.chapters.find(c => c.n === n);
+    if (!meta) return '';
+    const cls = meta.rhyme === 0 ? 'nav-link untranslated' : 'nav-link';
+    const suffix = meta.rhyme === 0 ? ' <span class="nav-tag">(untranslated)</span>' : '';
+    return `<a class="${cls}" href="?ch=${n}">${label}${suffix}</a>`;
+  };
+  const navHtml = `
+    <div class="chapter-nav">
+      <span>${chapterLink(prev, '&larr; Chapter ' + prev)}</span>
+      <span>${chapterLink(next, 'Chapter ' + next + ' &rarr;')}</span>
+    </div>`;
+
+  const paras = data.paragraphs.map((p, i) => {
+    if (!p.rhyme) {
+      return `<p class="rhyme-para untranslated" data-index="${i}">—</p>`;
+    }
+    if (settings.showSidebars) {
+      return `<p class="rhyme-para" data-index="${i}">${renderTagged(p.rhyme)}</p>`;
+    }
+    const plain = escapeHtml(stripTags(p.rhyme)).replace(/\n/g, '<br>');
+    return `<p class="rhyme-para no-click" data-index="${i}">${plain}</p>`;
+  }).join('');
+
+  const t = data.title || {};
+  const mainTitle = settings.showTitles ? t.rhyme : null;
+  const headingText = mainTitle || ('Chapter ' + data.n);
+  const titleClickable = settings.showSidebars && !!mainTitle;
+  const headingClass = titleClickable ? 'clickable' : '';
+  const titleHtml = `
+    <div class="chapter-title">
+      <h2 class="${headingClass}">${escapeHtml(headingText)}</h2>
+    </div>`;
+
+  const layoutClass = 'chapter-layout';
+  const sidebars = settings.showSidebars
+    ? `<aside class="detail-panel" id="detail"></aside>
+       <aside class="explanation-panel" id="explanation"></aside>`
+    : '';
+
+  app.innerHTML = `
+    ${navHtml}
+    <div class="${layoutClass}">
+      ${sidebars}
+      <div class="rhyme-column">${titleHtml}${paras}</div>
+    </div>
+    ${navHtml}`;
+
+  if (settings.showSidebars) {
+    renderDetail();
+    renderExplanation();
+  }
+}
+
+// Single delegated handler: tag clicks (in rhyme or annotation panel) show
+// the annotation; non-tag clicks on a translated rhyme paragraph reveal
+// the original/prose pair.
+app.addEventListener('click', (e) => {
+  if (!settings.showSidebars) return;
+  if (e.target.closest('a')) return;  // let external/internal links navigate
+  const closeButton = e.target.closest('[data-close-panel]');
+  if (closeButton) {
+    e.stopPropagation();
+    if (closeButton.dataset.closePanel === 'detail') closeDetail();
+    if (closeButton.dataset.closePanel === 'explanation') closeExplanation();
+    return;
+  }
+  const tag = e.target.closest('.tag');
+  if (tag) {
+    e.stopPropagation();
+    // Resolve relative to the paragraph the tag sits in. Cross-reference
+    // tags inside the annotation panel have no enclosing paragraph; they
+    // reuse the paragraph context already in state.
+    const para = tag.closest('.rhyme-para');
+    const idx = para ? parseInt(para.dataset.index, 10) : NaN;
+    showAnnotation(tag.dataset.id, Number.isFinite(idx) ? idx + 1 : undefined);
+    return;
+  }
+  if (e.target.closest('.chapter-title h2.clickable')) {
+    selectTitle();
+    return;
+  }
+  const para = e.target.closest('.rhyme-para');
+  if (para
+      && !para.classList.contains('untranslated')
+      && !para.classList.contains('no-click')) {
+    selectParagraph(parseInt(para.dataset.index, 10));
+  }
+});
+
+// Corner toolbar and contact popovers.
+(() => {
+  if (STANDALONE) {
+    document.getElementById('downloads').style.display = 'none';
+  }
+
+  const wireCheckbox = (id, key, storageKey) => {
+    const el = document.getElementById(id);
+    el.checked = settings[key];
+    el.addEventListener('change', (e) => {
+      settings[key] = e.target.checked;
+      lsSet(storageKey, settings[key] ? '1' : '0');
+      if (state.chapter && state.chapterData) renderChapter();
+      else if (state.main) renderIndex();
+    });
+  };
+  wireCheckbox('show-titles', 'showTitles', 'showTitles');
+  wireCheckbox('show-sidebars', 'showSidebars', 'showSidebars');
+
+  const closeAll = () => {
+    document.querySelectorAll('.popup-panel').forEach(p => p.hidden = true);
+  };
+  const wirePopup = (toggleId, panelId) => {
+    const toggle = document.getElementById(toggleId);
+    const panel = document.getElementById(panelId);
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const wasHidden = panel.hidden;
+      closeAll();
+      panel.hidden = !wasHidden;
+    });
+    panel.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => panel.hidden = true);
+    });
+  };
+  wirePopup('units-toggle', 'units-panel');
+  wirePopup('settings-toggle', 'settings-panel');
+  wirePopup('download-toggle', 'download-panel');
+  wirePopup('contact-toggle', 'contact-panel');
+
+  showDownloadSizes();
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.popup-host, .contact-host')) closeAll();
+  });
+})();
+
+// Contact copy button.
+(() => {
+  const button = document.getElementById('copy-email');
+  const email = document.getElementById('contact-email');
+  const status = document.getElementById('copy-status');
+  if (!button || !email || !status) return;
+
+  const fallbackCopy = (text) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  };
+
+  button.addEventListener('click', async () => {
+    const text = email.textContent.trim();
+    let copied = false;
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+      }
+    } catch (_) {
+      copied = false;
+    }
+    if (!copied) copied = fallbackCopy(text);
+    status.textContent = copied ? 'Copied.' : 'Copy failed.';
+    setTimeout(() => {
+      status.textContent = '';
+    }, 1600);
+  });
+})();
+
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.addEventListener('scroll', queueSaveScrollPosition, { passive: true });
+window.addEventListener('beforeunload', saveScrollPosition);
+
+async function render() {
+  if (!state.chapter) {
+    renderIndex();
+    restoreScrollPosition();
+    return;
+  }
+  app.textContent = 'Loading…';
+  await loadChapter(state.chapter);
+  renderChapter();
+  restoreScrollPosition();
+}
+
+(async () => {
+  try {
+    await loadMain();
+    await render();
+  } catch (e) {
+    app.textContent = 'Failed to load: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>

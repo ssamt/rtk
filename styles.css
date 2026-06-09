@@ -1,0 +1,52 @@
+/* Shared base styles for the site (index.html, map.html, future pages).
+   Page-specific CSS stays inline in each page's <style> block. */
+:root {
+  --bg: #fbf8f1;
+  --fg: #222;
+  --muted: #9b9382;
+  --border: #d8d2c4;
+  --accent: #6a4d2a;
+  --link: #8a3a2a;
+  --done: #4a7a3a;
+  --in-progress: #b8860b;
+  --highlight: #f0e7d2;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Georgia, "Times New Roman", serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  line-height: 1.7;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a.external {
+  color: var(--link);
+  text-decoration: underline dotted;
+  text-underline-offset: 0.2em;
+}
+a.external:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+a.external::after {
+  content: " \2197";
+  font-size: 0.75em;
+  vertical-align: super;
+  margin-left: 0.05em;
+}
+header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+header h1 { margin: 0; font-size: 1.4rem; font-weight: normal; }
+header h1 a { color: var(--fg); }
+.title-block { display: flex; flex-direction: column; gap: 0.25rem; }
+.byline { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+.byline a { color: inherit; }

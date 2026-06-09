@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Han Provinces &amp; Commanderies — Map Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* full-bleed: let the map use the whole screen */
+    body { margin: 0; padding: 0; max-width: none; }
+
+    /* hide the scrollbars — panning is by dragging, not scrolling, so a scrollbar
+       would mislead. The page stays programmatically scrollable (drag/zoom use it). */
+    html { scrollbar-width: none; -ms-overflow-style: none; }
+    html::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+    /* ---- search bar ---- */
+    .search-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .search-row input {
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--fg);
+      border-radius: 2px;
+      min-width: 16rem;
+    }
+    .search-row input:focus { outline: 2px solid var(--highlight); }
+
+    /* custom autocomplete dropdown (the native datalist can't be themed) */
+    .search-input-wrap { position: relative; }
+    .suggestions {
+      position: absolute;
+      top: calc(100% + 0.25rem);
+      left: 0;
+      right: 0;
+      margin: 0;
+      padding: 0.25rem 0;
+      list-style: none;
+      max-height: 16rem;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+      z-index: 10001;
+    }
+    .suggestions[hidden] { display: none; }
+    .suggestions li {
+      padding: 0.35rem 0.8rem;
+      font-size: 0.95rem;
+      color: var(--fg);
+      cursor: pointer;
+    }
+    .suggestions li.active,
+    .suggestions li:hover { background: var(--bg); }
+    .search-row button {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--fg);
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .search-row button:hover { background: var(--bg); }
+    .status { color: var(--muted); font-size: 0.9rem; }
+    .status:not(:empty) { margin-top: 0.4rem; }
+    .status b { color: var(--fg); font-weight: normal; }
+    .status .kind { font-variant: small-caps; letter-spacing: 0.05em; }
+    .map-source { color: var(--muted); font-size: 0.8rem; margin-top: 0.4rem; }
+
+    /* search panel floats at the top-left of the viewport while scrolling */
+    .search-overlay {
+      position: fixed;
+      top: 0.6rem;
+      left: 0.6rem;
+      z-index: 10000;            /* above the spotlight so search stays usable */
+      padding: 0.6rem 0.8rem;
+      background: rgba(251, 248, 241, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(2px);
+    }
+    .search-overlay .search-row { margin-bottom: 0; }
+
+    /* ---- map ---- */
+    /* The stage is a sized box (set in JS to W0*zoom) so the page stays
+       scrollable to the zoomed extent. The <img> keeps a CONSTANT layout box and
+       is zoomed with a GPU-composited transform: scale() — so the heavy SVG is
+       rasterized once, not re-rendered on every animation frame. */
+    .map-stage {
+      position: relative;
+      width: 100%;
+      background: #fff;
+    }
+    .map-stage img {
+      display: block;
+      position: absolute;
+      top: 0; left: 0;
+      transform-origin: 0 0;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    /* promoted to its own GPU layer only while zooming (see JS) — kept smooth
+       during the glide, then dropped so the static map re-rasterizes crisply */
+    .map-stage img.zooming { will-change: transform; }
+    .map-stage.grab { cursor: grab; }
+    .map-stage.grabbing { cursor: grabbing; }
+
+    /* invisible point used only to anchor scrolling + the spotlight */
+    .pin {
+      position: absolute;
+      width: 1px; height: 1px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ---- PowerToys "Find My Mouse"-style spotlight (screen space) ---- */
+    .spot-hole {
+      position: absolute;
+      border-radius: 50%;
+      width: 180px; height: 180px;
+      /* spread is set in JS to cover the whole (possibly zoomed) document so the
+         shadow's outer edge never scrolls into view */
+      box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.55);
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .spot-hole.on { opacity: 1; }
+    .spot-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%) scale(6);
+      opacity: 0;
+    }
+    .spot-ring.go { animation: converge 0.65s ease-out forwards; }
+    @keyframes converge {
+      0%   { transform: translate(-50%, -50%) scale(6);   opacity: 0; }
+      25%  { opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.9; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="map-stage" id="stage">
+  <div class="search-overlay">
+    <form class="search-row" id="search-form" autocomplete="off">
+      <div class="search-input-wrap">
+        <input type="text" id="query" placeholder="Search a location..." aria-label="Search location"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions">
+        <ul class="suggestions" id="suggestions" role="listbox" hidden></ul>
+      </div>
+      <button type="submit">Find</button>
+    </form>
+    <div class="status" id="status">Loading locations…</div>
+    <div class="map-source"><a class="external" href="https://commons.wikimedia.org/wiki/File:Jian%27an_Commanderies.svg" target="_blank" rel="noopener noreferrer">Map source</a></div>
+  </div>
+  <img id="map-img" src="images/maps/han_commandery/20220213161849!Jian'an_Commanderies.svg" alt="Map of Han provinces and commanderies">
+  <div class="pin" id="pin"></div>
+</div>
+
+<script>
+const VIEW_W = 2500, VIEW_H = 1800;   // SVG viewBox
+const stage = document.getElementById('stage');
+const mapImg = document.getElementById('map-img');
+const pin = document.getElementById('pin');
+const statusEl = document.getElementById('status');
+const input = document.getElementById('query');
+const form = document.getElementById('search-form');
+const suggestBox = document.getElementById('suggestions');
+
+let places = [];
+let allNames = [];
+let lastKey = null, cycleIdx = 0;
+let activeIdx = -1;   // highlighted suggestion
+
+const norm = s => (s || '').toLowerCase().replace(/[()'’.\s]/g, '');
+
+// show suggestions whose name starts with the typed term (prefix match)
+function updateSuggestions(q) {
+  const nq = norm(q);
+  const names = nq ? allNames.filter(n => norm(n).startsWith(nq)) : [];
+  activeIdx = -1;
+  if (!names.length) { hideSuggestions(); return; }
+  suggestBox.innerHTML = names
+    .map((n, i) => `<li role="option" id="sg-${i}" data-name="${n.replace(/"/g, '&quot;')}">${n}</li>`)
+    .join('');
+  suggestBox.hidden = false;
+  input.setAttribute('aria-expanded', 'true');
+}
+
+function hideSuggestions() {
+  suggestBox.hidden = true;
+  suggestBox.innerHTML = '';
+  activeIdx = -1;
+  input.setAttribute('aria-expanded', 'false');
+  input.removeAttribute('aria-activedescendant');
+}
+
+function setActive(idx) {
+  const items = suggestBox.querySelectorAll('li');
+  if (!items.length) return;
+  activeIdx = (idx + items.length) % items.length;
+  items.forEach((li, i) => li.classList.toggle('active', i === activeIdx));
+  const el = items[activeIdx];
+  el.scrollIntoView({ block: 'nearest' });
+  input.setAttribute('aria-activedescendant', el.id);
+}
+
+function chooseSuggestion(name) {
+  input.value = name;
+  hideSuggestions();
+  search(name);
+}
+
+fetch('images/maps/han_commandery/locations.json')
+  .then(r => r.json())
+  .then(data => {
+    places = data;
+    allNames = [...new Set(data.map(p => p.name).filter(Boolean))].sort();
+    statusEl.textContent = '';
+  })
+  .catch(() => { statusEl.textContent = 'Could not load locations.json (serve the site over http, not file://).'; });
+
+input.addEventListener('input', () => updateSuggestions(input.value));
+
+input.addEventListener('keydown', e => {
+  if (suggestBox.hidden) return;
+  if (e.key === 'ArrowDown')      { e.preventDefault(); setActive(activeIdx + 1); }
+  else if (e.key === 'ArrowUp')   { e.preventDefault(); setActive(activeIdx - 1); }
+  else if (e.key === 'Enter' && activeIdx >= 0) {
+    e.preventDefault();
+    chooseSuggestion(suggestBox.querySelectorAll('li')[activeIdx].dataset.name);
+  } else if (e.key === 'Escape')  { hideSuggestions(); }
+});
+
+suggestBox.addEventListener('mousedown', e => {
+  const li = e.target.closest('li');
+  if (li) { e.preventDefault(); chooseSuggestion(li.dataset.name); }
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-input-wrap')) hideSuggestions();
+});
+
+form.addEventListener('submit', e => { e.preventDefault(); hideSuggestions(); search(input.value); });
+
+function search(q) {
+  q = (q || '').trim();
+  if (!q) return;
+  const nq = norm(q);
+  // exact normalized match first, then prefix match
+  let matches = places.filter(p => norm(p.name) === nq);
+  if (!matches.length) matches = places.filter(p => norm(p.name).startsWith(nq));
+  if (!matches.length) { statusEl.textContent = `No location matches “${q}”.`; return; }
+
+  const key = matches.map(m => m.name + m.x + m.y).join('|');
+  cycleIdx = (key === lastKey) ? (cycleIdx + 1) % matches.length : 0;
+  lastKey = key;
+
+  const m = matches[cycleIdx];
+  const which = matches.length > 1 ? ` (${cycleIdx + 1} of ${matches.length})` : '';
+  statusEl.innerHTML =
+    `<b>${m.name}</b> — <span class="kind">${m.type}</span>` +
+    `${m.capital ? ' (capital)' : ''}${which}`;
+  focusOn(m);
+}
+
+function focusOn(loc) {
+  pin.style.left = (loc.x / VIEW_W * 100) + '%';
+  pin.style.top  = (loc.y / VIEW_H * 100) + '%';
+  pin.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  // provinces span large areas, so widen their spotlight; scale with zoom so the
+  // circle keeps tracking the on-screen feature size, but cap it so it can't grow
+  // to swallow the whole viewport at high zoom
+  spotBase = loc.type === 'province' ? 380 : 180;
+  const diam = spotBase * Math.min(zoom, ZOOM_SPOT_CAP);
+  // place the spotlight only once the (programmatic) scroll has settled, so it
+  // lands on the pin's final screen position rather than a mid-scroll one
+  afterScrollSettles(() => {
+    // page (document) coordinates so the spotlight scrolls with the map
+    const r = pin.getBoundingClientRect();
+    spotlight(r.left + r.width / 2 + window.scrollX,
+              r.top + r.height / 2 + window.scrollY, diam);
+  });
+}
+
+// Run cb once window scrolling has been idle for a moment (or after a timeout).
+function afterScrollSettles(cb) {
+  let last = performance.now();
+  const onScroll = () => { last = performance.now(); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  const t0 = last;
+  (function check() {
+    const now = performance.now();
+    if ((now - last > 140 && now - t0 > 120) || now - t0 > 1600) {
+      window.removeEventListener('scroll', onScroll);
+      cb();
+    } else {
+      requestAnimationFrame(check);
+    }
+  })();
+}
+
+let activeHole = null;
+let spotBase = 180;   // base diameter of the current spotlight (pre-zoom)
+
+function clearSpotlight() {
+  document.querySelectorAll('.spot-ring').forEach(r => r.remove());
+  if (activeHole) {
+    const h = activeHole;
+    activeHole = null;
+    h.classList.remove('on');
+    setTimeout(() => h.remove(), 300);
+  }
+}
+
+// Re-anchor the persistent spotlight hole to the pin's current position/size.
+// The hole lives in document space, so a zoom (which moves the pin and rescales
+// the map) would otherwise leave it stranded.
+function repositionSpotlight() {
+  if (!activeHole) return;
+  const diam = spotBase * Math.min(zoom, ZOOM_SPOT_CAP);
+  const r = pin.getBoundingClientRect();
+  const cx = r.left + r.width / 2 + window.scrollX;
+  const cy = r.top + r.height / 2 + window.scrollY;
+  activeHole.style.width = activeHole.style.height = diam + 'px';
+  activeHole.style.left = (cx - diam / 2) + 'px';
+  activeHole.style.top = (cy - diam / 2) + 'px';
+  dimSpread(activeHole);
+}
+
+// Size the dimming shadow so it always covers the full scrollable document — a
+// fixed 100vmax edge would otherwise become visible once the map is zoomed past
+// the viewport size.
+function dimSpread(hole) {
+  const spread = Math.max(
+    document.documentElement.scrollWidth,
+    document.documentElement.scrollHeight
+  ) + window.innerWidth;
+  hole.style.boxShadow = `0 0 0 ${spread}px rgba(0, 0, 0, 0.55)`;
+}
+
+function spotlight(cx, cy, diam) {
+  clearSpotlight();                       // replace any existing focus
+
+  const hole = document.createElement('div');
+  hole.className = 'spot-hole';
+  hole.style.width = hole.style.height = diam + 'px';
+  hole.style.left = (cx - diam / 2) + 'px';
+  hole.style.top = (cy - diam / 2) + 'px';
+  dimSpread(hole);
+  document.body.appendChild(hole);
+  activeHole = hole;
+  requestAnimationFrame(() => hole.classList.add('on'));
+
+  // two converging rings, like Find My Mouse (intro flourish, then gone)
+  [0, 180].forEach(delay => {
+    const ring = document.createElement('div');
+    ring.className = 'spot-ring';
+    ring.style.left = cx + 'px';
+    ring.style.top = cy + 'px';
+    ring.style.width = ring.style.height = diam + 'px';
+    document.body.appendChild(ring);
+    setTimeout(() => ring.classList.add('go'), delay);
+    setTimeout(() => ring.remove(), delay + 700);
+  });
+  // the dimmed hole stays until the user clicks (see listener below)
+}
+
+// a mouse click anywhere dismisses the focus (but not when using the search box)
+document.addEventListener('click', e => {
+  if (e.target.closest('#search-form')) return;
+  clearSpotlight();
+});
+
+// Tab moves keyboard focus (and may scroll the page) — drop the spotlight so it
+// can't end up stranded. Scrolling on its own keeps the focus.
+document.addEventListener('keydown', e => {
+  if (e.key === 'Tab') clearSpotlight();
+});
+
+// ---- zoom ----
+const ZOOM_MIN = 1, ZOOM_MAX = 6, ZOOM_FACTOR = 1.2;   // each wheel notch multiplies/divides by this
+const ZOOM_SPOT_CAP = 2.5;   // spotlight grows with zoom, but no larger than this multiple
+const ASPECT = VIEW_W / VIEW_H;
+let zoom = 1;
+let W0 = 0, H0 = 0;   // base (zoom-1) pixel size of the map
+
+// Fix the image's layout box to the base size once, so the SVG is rasterized a
+// single time; zoom then scales that cached layer via transform. Called on load
+// and whenever the viewport width changes.
+function initBaseSize() {
+  W0 = document.documentElement.clientWidth;
+  H0 = W0 / ASPECT;
+  mapImg.style.width = W0 + 'px';
+  mapImg.style.height = H0 + 'px';
+  applyZoom();
+}
+
+function applyZoom() {
+  zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoom));
+  // resize the (empty) stage box so the page scrolls to the zoomed extent…
+  stage.style.width = (W0 * zoom) + 'px';
+  stage.style.height = (H0 * zoom) + 'px';
+  // …and zoom the image itself with a GPU-composited transform (no re-raster).
+  mapImg.style.transform = `scale(${zoom})`;
+}
+
+// keep the base size in sync with the window; preserve the on-screen center
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(initBaseSize, 120);
+});
+
+// Zoom toward a viewport point (cx, cy) so it stays under the cursor/center.
+function zoomTo(newZoom, cx, cy) {
+  newZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, newZoom));
+  if (newZoom === zoom) return;
+  // document coordinate of the focal point before zoom, as a fraction of stage
+  const fx = (window.scrollX + cx) / stage.offsetWidth;
+  const fy = (window.scrollY + cy) / stage.offsetHeight;
+  const oldH = stage.offsetHeight;
+  zoom = newZoom;
+  applyZoom();
+  // keep the focal point fixed on screen after the width (and height) change
+  window.scrollTo(
+    fx * stage.offsetWidth - cx,
+    fy * stage.offsetHeight - cy
+  );
+  repositionSpotlight();
+}
+
+// ---- smooth (eased) zoom ----
+// We ease `zoom` toward `zoomTarget` over several frames. Each frame keeps the
+// document point that sat under the cursor fixed on screen, so the zoom glides
+// in/out instead of snapping.
+let zoomTarget = 1, zoomAnim = null, zoomCx = 0, zoomCy = 0;
+
+function animateZoom() {
+  if (zoomAnim) return;   // a loop is already running; it reads the latest target/anchor
+  mapImg.classList.add('zooming');   // GPU layer for the duration of the glide
+  const step = () => {
+    // interpolate ~22% of the remaining distance per frame
+    const next = zoom + (zoomTarget - zoom) * 0.22;
+    const done = Math.abs(zoomTarget - zoom) < 0.002;
+    zoomTo(done ? zoomTarget : next, zoomCx, zoomCy);
+    if (done) {
+      zoomAnim = null;
+      mapImg.classList.remove('zooming');   // drop layer → crisp re-raster at rest
+    } else {
+      zoomAnim = requestAnimationFrame(step);
+    }
+  };
+  zoomAnim = requestAnimationFrame(step);
+}
+
+// Mouse wheel zooms toward the cursor (native page scroll is suppressed)
+stage.addEventListener('wheel', e => {
+  e.preventDefault();
+  const base = zoomAnim ? zoomTarget : zoom;   // chain off the pending target
+  zoomTarget = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN,
+    e.deltaY < 0 ? base * ZOOM_FACTOR : base / ZOOM_FACTOR));
+  zoomCx = e.clientX;   // latest cursor position the loop anchors to
+  zoomCy = e.clientY;
+  animateZoom();
+}, { passive: false });
+
+// ---- drag to pan ----
+let dragging = false, dragStartX = 0, dragStartY = 0, scrollStartX = 0, scrollStartY = 0;
+stage.classList.add('grab');
+
+stage.addEventListener('pointerdown', e => {
+  if (e.button !== 0) return;
+  // let the search box and its controls work normally
+  if (e.target.closest('.search-overlay')) return;
+  dragging = true;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  scrollStartX = window.scrollX;
+  scrollStartY = window.scrollY;
+  stage.classList.add('grabbing');
+  stage.setPointerCapture(e.pointerId);
+});
+
+stage.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  window.scrollTo(
+    scrollStartX - (e.clientX - dragStartX),
+    scrollStartY - (e.clientY - dragStartY)
+  );
+});
+
+function endDrag(e) {
+  if (!dragging) return;
+  dragging = false;
+  stage.classList.remove('grabbing');
+  try { stage.releasePointerCapture(e.pointerId); } catch (_) {}
+}
+stage.addEventListener('pointerup', endDrag);
+stage.addEventListener('pointercancel', endDrag);
+
+initBaseSize();
+
+// focus the search box on load for quick keyboard use
+input.focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,2590 @@
+[
+  {
+    "name": "Bing",
+    "type": "province",
+    "x": 1327.3,
+    "y": 522.5
+  },
+  {
+    "name": "Ji",
+    "type": "province",
+    "x": 1556.2,
+    "y": 529.2
+  },
+  {
+    "name": "Jiao",
+    "type": "province",
+    "x": 1089.2,
+    "y": 1434.3
+  },
+  {
+    "name": "Jing",
+    "type": "province",
+    "x": 1304.0,
+    "y": 990.5
+  },
+  {
+    "name": "Liang",
+    "type": "province",
+    "x": 608.5,
+    "y": 408.8
+  },
+  {
+    "name": "Qing",
+    "type": "province",
+    "x": 1767.5,
+    "y": 533.4
+  },
+  {
+    "name": "Sili",
+    "type": "province",
+    "x": 1318.0,
+    "y": 678.3
+  },
+  {
+    "name": "Xu",
+    "type": "province",
+    "x": 1724.8,
+    "y": 752.7
+  },
+  {
+    "name": "Yan",
+    "type": "province",
+    "x": 1550.4,
+    "y": 636.7
+  },
+  {
+    "name": "Yang",
+    "type": "province",
+    "x": 1613.7,
+    "y": 1064.0
+  },
+  {
+    "name": "Yi",
+    "type": "province",
+    "x": 908.6,
+    "y": 1151.3
+  },
+  {
+    "name": "Yong",
+    "type": "province",
+    "x": 1002.6,
+    "y": 652.8
+  },
+  {
+    "name": "You",
+    "type": "province",
+    "x": 1915.9,
+    "y": 381.1
+  },
+  {
+    "name": "Yu",
+    "type": "province",
+    "x": 1549.8,
+    "y": 773.7
+  },
+  {
+    "name": "Anding",
+    "type": "commandery",
+    "x": 974.0,
+    "y": 618.0
+  },
+  {
+    "name": "Anping",
+    "type": "commandery",
+    "x": 1544.5,
+    "y": 490.6
+  },
+  {
+    "name": "Ba",
+    "type": "commandery",
+    "x": 989.5,
+    "y": 959.1
+  },
+  {
+    "name": "Badong",
+    "type": "commandery",
+    "x": 1062.4,
+    "y": 1001.3
+  },
+  {
+    "name": "Baxi",
+    "type": "commandery",
+    "x": 962.5,
+    "y": 895.1
+  },
+  {
+    "name": "Beidi",
+    "type": "commandery",
+    "x": 1137.6,
+    "y": 655.0
+  },
+  {
+    "name": "Beihai",
+    "type": "commandery",
+    "x": 1729.6,
+    "y": 577.6
+  },
+  {
+    "name": "Bohai",
+    "type": "commandery",
+    "x": 1644.0,
+    "y": 464.6
+  },
+  {
+    "name": "Boling",
+    "type": "commandery",
+    "x": 1532.5,
+    "y": 447.6
+  },
+  {
+    "name": "Cangwu",
+    "type": "commandery",
+    "x": 1295.5,
+    "y": 1393.5
+  },
+  {
+    "name": "Changsha",
+    "type": "commandery",
+    "x": 1328.5,
+    "y": 1072.2
+  },
+  {
+    "name": "Changshan",
+    "type": "commandery",
+    "x": 1449.0,
+    "y": 449.6
+  },
+  {
+    "name": "Chen",
+    "type": "commandery",
+    "x": 1487.5,
+    "y": 720.5
+  },
+  {
+    "name": "Chengyang",
+    "type": "commandery",
+    "x": 1772.0,
+    "y": 592.6
+  },
+  {
+    "name": "Chenliu",
+    "type": "commandery",
+    "x": 1471.0,
+    "y": 656.6
+  },
+  {
+    "name": "Dai",
+    "type": "commandery",
+    "x": 1459.0,
+    "y": 342.6
+  },
+  {
+    "name": "Daifang",
+    "type": "commandery",
+    "x": 2192.0,
+    "y": 460.6
+  },
+  {
+    "name": "Dangqu",
+    "type": "commandery",
+    "x": 1063.5,
+    "y": 854.1
+  },
+  {
+    "name": "Danyang",
+    "type": "commandery",
+    "x": 1731.0,
+    "y": 885.2
+  },
+  {
+    "name": "Dong",
+    "type": "commandery",
+    "x": 1547.5,
+    "y": 579.6
+  },
+  {
+    "name": "Dongguan",
+    "type": "commandery",
+    "x": 1695.6,
+    "y": 619.6
+  },
+  {
+    "name": "Donghai",
+    "type": "commandery",
+    "x": 1713.0,
+    "y": 700.6
+  },
+  {
+    "name": "Donglai",
+    "type": "commandery",
+    "x": 1880.0,
+    "y": 526.6
+  },
+  {
+    "name": "Dongping",
+    "type": "commandery",
+    "x": 1586.0,
+    "y": 621.6
+  },
+  {
+    "name": "Dunhuang",
+    "type": "commandery",
+    "x": 342.0,
+    "y": 342.0
+  },
+  {
+    "name": "Fangling",
+    "type": "commandery",
+    "x": 1258.5,
+    "y": 855.2
+  },
+  {
+    "name": "Fanyang",
+    "type": "commandery",
+    "x": 1525.0,
+    "y": 383.6
+  },
+  {
+    "name": "Ganling",
+    "type": "commandery",
+    "x": 1548.0,
+    "y": 533.6
+  },
+  {
+    "name": "Guanghan",
+    "type": "commandery",
+    "x": 905.5,
+    "y": 893.1
+  },
+  {
+    "name": "Guangling",
+    "type": "commandery",
+    "x": 1765.6,
+    "y": 788.6
+  },
+  {
+    "name": "Guiyang",
+    "type": "commandery",
+    "x": 1374.0,
+    "y": 1255.2
+  },
+  {
+    "name": "Guling",
+    "type": "commandery",
+    "x": 1163.5,
+    "y": 923.5
+  },
+  {
+    "name": "Hanxing",
+    "type": "commandery",
+    "x": 1017.5,
+    "y": 671.0
+  },
+  {
+    "name": "Hanyang",
+    "type": "commandery",
+    "x": 938.5,
+    "y": 657.0
+  },
+  {
+    "name": "Hanzhong",
+    "type": "commandery",
+    "x": 1036.5,
+    "y": 759.2
+  },
+  {
+    "name": "Hedong",
+    "type": "commandery",
+    "x": 1272.0,
+    "y": 617.0
+  },
+  {
+    "name": "Hejian",
+    "type": "commandery",
+    "x": 1582.5,
+    "y": 463.6
+  },
+  {
+    "name": "Henan",
+    "type": "commandery",
+    "x": 1398.0,
+    "y": 679.5
+  },
+  {
+    "name": "Henei",
+    "type": "commandery",
+    "x": 1425.0,
+    "y": 618.6
+  },
+  {
+    "name": "Hepu",
+    "type": "commandery",
+    "x": 1211.5,
+    "y": 1447.5
+  },
+  {
+    "name": "Hongnong",
+    "type": "commandery",
+    "x": 1287.0,
+    "y": 723.0
+  },
+  {
+    "name": "Jiangxia",
+    "type": "commandery",
+    "x": 1388.5,
+    "y": 893.2
+  },
+  {
+    "name": "Jiangyang",
+    "type": "commandery",
+    "x": 919.0,
+    "y": 1007.1
+  },
+  {
+    "name": "Jianwei",
+    "type": "commandery",
+    "x": 850.0,
+    "y": 980.1
+  },
+  {
+    "name": "Jiaozhi",
+    "type": "commandery",
+    "x": 977.0,
+    "y": 1470.5
+  },
+  {
+    "name": "Jibei",
+    "type": "commandery",
+    "x": 1579.0,
+    "y": 585.6
+  },
+  {
+    "name": "Jinan",
+    "type": "commandery",
+    "x": 1649.0,
+    "y": 537.5
+  },
+  {
+    "name": "Jincheng",
+    "type": "commandery",
+    "x": 798.0,
+    "y": 571.0
+  },
+  {
+    "name": "Jingzhao",
+    "type": "commandery",
+    "x": 1203.0,
+    "y": 716.0
+  },
+  {
+    "name": "Jiujiang",
+    "type": "commandery",
+    "x": 1653.5,
+    "y": 857.2
+  },
+  {
+    "name": "Jiuquan",
+    "type": "commandery",
+    "x": 500.5,
+    "y": 356.0
+  },
+  {
+    "name": "Jiuzhen",
+    "type": "commandery",
+    "x": 922.0,
+    "y": 1598.5
+  },
+  {
+    "name": "Jiyin",
+    "type": "commandery",
+    "x": 1540.0,
+    "y": 669.6
+  },
+  {
+    "name": "Julu",
+    "type": "commandery",
+    "x": 1507.5,
+    "y": 487.6
+  },
+  {
+    "name": "Kuaiji",
+    "type": "commandery",
+    "x": 1796.1,
+    "y": 1040.2
+  },
+  {
+    "name": "Kuaiji",
+    "type": "commandery",
+    "x": 2112.1,
+    "y": 1202.0
+  },
+  {
+    "name": "Langya",
+    "type": "commandery",
+    "x": 1691.5,
+    "y": 661.6
+  },
+  {
+    "name": "Laoling",
+    "type": "commandery",
+    "x": 1661.0,
+    "y": 500.6
+  },
+  {
+    "name": "Le'an",
+    "type": "commandery",
+    "x": 1703.0,
+    "y": 522.6
+  },
+  {
+    "name": "Lelang",
+    "type": "commandery",
+    "x": 2178.5,
+    "y": 394.6
+  },
+  {
+    "name": "Leping",
+    "type": "commandery",
+    "x": 1425.0,
+    "y": 487.0
+  },
+  {
+    "name": "Liang",
+    "type": "commandery",
+    "x": 1562.0,
+    "y": 699.5
+  },
+  {
+    "name": "Liaodong",
+    "type": "commandery",
+    "x": 1990.5,
+    "y": 316.6
+  },
+  {
+    "name": "Liaodong",
+    "type": "commandery",
+    "x": 1921.1,
+    "y": 260.4
+  },
+  {
+    "name": "Liaoxi",
+    "type": "commandery",
+    "x": 1808.5,
+    "y": 332.6
+  },
+  {
+    "name": "Licheng",
+    "type": "commandery",
+    "x": 1733.0,
+    "y": 668.6
+  },
+  {
+    "name": "Linchuan",
+    "type": "commandery",
+    "x": 1646.1,
+    "y": 948.2
+  },
+  {
+    "name": "Lingling",
+    "type": "commandery",
+    "x": 1268.5,
+    "y": 1156.2
+  },
+  {
+    "name": "Longxi",
+    "type": "commandery",
+    "x": 861.0,
+    "y": 678.0
+  },
+  {
+    "name": "Lu",
+    "type": "commandery",
+    "x": 1633.5,
+    "y": 632.5
+  },
+  {
+    "name": "Lujiang",
+    "type": "commandery",
+    "x": 1587.0,
+    "y": 882.2
+  },
+  {
+    "name": "Luling",
+    "type": "commandery",
+    "x": 1495.1,
+    "y": 1231.2
+  },
+  {
+    "name": "Nan",
+    "type": "commandery",
+    "x": 1368.0,
+    "y": 949.5
+  },
+  {
+    "name": "Nanhai",
+    "type": "commandery",
+    "x": 1453.5,
+    "y": 1361.5
+  },
+  {
+    "name": "Nanxiang",
+    "type": "commandery",
+    "x": 1271.5,
+    "y": 812.2
+  },
+  {
+    "name": "Nanyang",
+    "type": "commandery",
+    "x": 1352.0,
+    "y": 755.2
+  },
+  {
+    "name": "Pei",
+    "type": "commandery",
+    "x": 1606.0,
+    "y": 747.6
+  },
+  {
+    "name": "Pengcheng",
+    "type": "commandery",
+    "x": 1649.0,
+    "y": 697.6
+  },
+  {
+    "name": "Pingyuan",
+    "type": "commandery",
+    "x": 1617.5,
+    "y": 520.6
+  },
+  {
+    "name": "Poyang",
+    "type": "commandery",
+    "x": 1616.1,
+    "y": 1040.2
+  },
+  {
+    "name": "Qi",
+    "type": "commandery",
+    "x": 1706.5,
+    "y": 540.6
+  },
+  {
+    "name": "Qiao",
+    "type": "commandery",
+    "x": 1540.5,
+    "y": 743.6
+  },
+  {
+    "name": "Qichun",
+    "type": "commandery",
+    "x": 1515.5,
+    "y": 907.2
+  },
+  {
+    "name": "Rencheng",
+    "type": "commandery",
+    "x": 1600.0,
+    "y": 656.6
+  },
+  {
+    "name": "Rinan",
+    "type": "commandery",
+    "x": 984.0,
+    "y": 1715.5
+  },
+  {
+    "name": "Runan",
+    "type": "commandery",
+    "x": 1511.0,
+    "y": 779.5
+  },
+  {
+    "name": "Shangdang",
+    "type": "commandery",
+    "x": 1350.5,
+    "y": 564.0
+  },
+  {
+    "name": "Shanggu",
+    "type": "commandery",
+    "x": 1530.0,
+    "y": 305.6
+  },
+  {
+    "name": "Shangyong",
+    "type": "commandery",
+    "x": 1191.0,
+    "y": 839.2
+  },
+  {
+    "name": "Shanyang",
+    "type": "commandery",
+    "x": 1565.0,
+    "y": 644.6
+  },
+  {
+    "name": "Shu",
+    "type": "commandery",
+    "x": 826.0,
+    "y": 912.1
+  },
+  {
+    "name": "Shu",
+    "type": "commandery",
+    "x": 751.5,
+    "y": 965.3
+  },
+  {
+    "name": "Taishan",
+    "type": "commandery",
+    "x": 1653.0,
+    "y": 611.5
+  },
+  {
+    "name": "Taiyuan",
+    "type": "commandery",
+    "x": 1325.5,
+    "y": 468.0
+  },
+  {
+    "name": "Wei",
+    "type": "commandery",
+    "x": 1475.0,
+    "y": 577.6
+  },
+  {
+    "name": "Wenshan",
+    "type": "commandery",
+    "x": 821.0,
+    "y": 826.1
+  },
+  {
+    "name": "Wu",
+    "type": "commandery",
+    "x": 1842.6,
+    "y": 902.2
+  },
+  {
+    "name": "Wudu",
+    "type": "commandery",
+    "x": 890.0,
+    "y": 742.0
+  },
+  {
+    "name": "Wuling",
+    "type": "commandery",
+    "x": 1245.5,
+    "y": 1007.2
+  },
+  {
+    "name": "Wuwei",
+    "type": "commandery",
+    "x": 787.5,
+    "y": 528.0
+  },
+  {
+    "name": "Xi",
+    "type": "commandery",
+    "x": 700.0,
+    "y": 455.0
+  },
+  {
+    "name": "Xiangyang",
+    "type": "commandery",
+    "x": 1328.0,
+    "y": 844.2
+  },
+  {
+    "name": "Xiapi",
+    "type": "commandery",
+    "x": 1692.0,
+    "y": 789.6
+  },
+  {
+    "name": "Xicheng",
+    "type": "commandery",
+    "x": 1161.0,
+    "y": 760.2
+  },
+  {
+    "name": "Xihai",
+    "type": "commandery",
+    "x": 639.5,
+    "y": 276.0
+  },
+  {
+    "name": "Xihe",
+    "type": "commandery",
+    "x": 1277.4,
+    "y": 528.0
+  },
+  {
+    "name": "Xindu",
+    "type": "commandery",
+    "x": 1668.6,
+    "y": 972.2
+  },
+  {
+    "name": "Xinxing",
+    "type": "commandery",
+    "x": 1387.5,
+    "y": 438.0
+  },
+  {
+    "name": "Xiping",
+    "type": "commandery",
+    "x": 722.0,
+    "y": 580.0
+  },
+  {
+    "name": "Xuantu",
+    "type": "commandery",
+    "x": 2002.5,
+    "y": 253.6
+  },
+  {
+    "name": "Yan",
+    "type": "commandery",
+    "x": 1573.0,
+    "y": 356.6
+  },
+  {
+    "name": "Yanmen",
+    "type": "commandery",
+    "x": 1385.0,
+    "y": 401.0
+  },
+  {
+    "name": "Yidu",
+    "type": "commandery",
+    "x": 1268.5,
+    "y": 917.2
+  },
+  {
+    "name": "Yingchuan",
+    "type": "commandery",
+    "x": 1411.0,
+    "y": 733.5
+  },
+  {
+    "name": "Yinping",
+    "type": "commandery",
+    "x": 853.0,
+    "y": 770.1
+  },
+  {
+    "name": "Yiyang",
+    "type": "commandery",
+    "x": 1493.5,
+    "y": 845.5
+  },
+  {
+    "name": "Yizhou",
+    "type": "commandery",
+    "x": 737.5,
+    "y": 1240.1
+  },
+  {
+    "name": "Yongchang",
+    "type": "commandery",
+    "x": 588.0,
+    "y": 1285.1
+  },
+  {
+    "name": "Youbeiping",
+    "type": "commandery",
+    "x": 1663.5,
+    "y": 369.6
+  },
+  {
+    "name": "Youfufeng",
+    "type": "commandery",
+    "x": 1086.5,
+    "y": 711.0
+  },
+  {
+    "name": "Yuexi",
+    "type": "commandery",
+    "x": 737.0,
+    "y": 1162.1
+  },
+  {
+    "name": "Yulin",
+    "type": "commandery",
+    "x": 1145.0,
+    "y": 1343.5
+  },
+  {
+    "name": "Yuyang",
+    "type": "commandery",
+    "x": 1605.5,
+    "y": 321.6
+  },
+  {
+    "name": "Yuzhang",
+    "type": "commandery",
+    "x": 1555.6,
+    "y": 1094.2
+  },
+  {
+    "name": "Zangke",
+    "type": "commandery",
+    "x": 1000.5,
+    "y": 1170.1
+  },
+  {
+    "name": "Zhangling",
+    "type": "commandery",
+    "x": 1410.0,
+    "y": 831.2
+  },
+  {
+    "name": "Zhangwu",
+    "type": "commandery",
+    "x": 1616.0,
+    "y": 426.6
+  },
+  {
+    "name": "Zhangye",
+    "type": "commandery",
+    "x": 630.5,
+    "y": 438.0
+  },
+  {
+    "name": "Zhangye",
+    "type": "commandery",
+    "x": 608.9,
+    "y": 341.4
+  },
+  {
+    "name": "Zhao",
+    "type": "commandery",
+    "x": 1457.0,
+    "y": 501.6
+  },
+  {
+    "name": "Zhongshan",
+    "type": "commandery",
+    "x": 1469.0,
+    "y": 408.6
+  },
+  {
+    "name": "Zhuti",
+    "type": "commandery",
+    "x": 865.0,
+    "y": 1106.1
+  },
+  {
+    "name": "Zitong",
+    "type": "commandery",
+    "x": 914.5,
+    "y": 835.1
+  },
+  {
+    "name": "Zitong",
+    "type": "commandery",
+    "x": 914.5,
+    "y": 835.1
+  },
+  {
+    "name": "Zuopingyi",
+    "type": "commandery",
+    "x": 1187.5,
+    "y": 648.0
+  },
+  {
+    "name": "Ancheng",
+    "type": "city",
+    "capital": false,
+    "x": 1446.2,
+    "y": 789.9
+  },
+  {
+    "name": "Anfeng",
+    "type": "city",
+    "capital": false,
+    "x": 1546.5,
+    "y": 832.9
+  },
+  {
+    "name": "Anlu",
+    "type": "city",
+    "capital": false,
+    "x": 1423.0,
+    "y": 892.9
+  },
+  {
+    "name": "Anyi",
+    "type": "city",
+    "capital": true,
+    "x": 1268.0,
+    "y": 639.9
+  },
+  {
+    "name": "Bi",
+    "type": "city",
+    "capital": false,
+    "x": 1664.8,
+    "y": 645.7
+  },
+  {
+    "name": "Bo",
+    "type": "city",
+    "capital": false,
+    "x": 1635.5,
+    "y": 603.9
+  },
+  {
+    "name": "Bodao",
+    "type": "city",
+    "capital": false,
+    "x": 873.7,
+    "y": 1026.9
+  },
+  {
+    "name": "Boling",
+    "type": "city",
+    "capital": true,
+    "x": 1535.5,
+    "y": 464.9
+  },
+  {
+    "name": "Bushan",
+    "type": "city",
+    "capital": true,
+    "x": 1206.5,
+    "y": 1368.9
+  },
+  {
+    "name": "Buwei",
+    "type": "city",
+    "capital": true,
+    "x": 547.7,
+    "y": 1257.9
+  },
+  {
+    "name": "Chaisang",
+    "type": "city",
+    "capital": false,
+    "x": 1526.0,
+    "y": 980.9
+  },
+  {
+    "name": "Chang'an",
+    "type": "city",
+    "capital": true,
+    "x": 1154.0,
+    "y": 698.9
+  },
+  {
+    "name": "Changguang",
+    "type": "city",
+    "capital": false,
+    "x": 1880.5,
+    "y": 543.9
+  },
+  {
+    "name": "Changli",
+    "type": "city",
+    "capital": false,
+    "x": 1879.2,
+    "y": 261.9
+  },
+  {
+    "name": "Changlü",
+    "type": "city",
+    "capital": false,
+    "x": 1646.8,
+    "y": 671.9
+  },
+  {
+    "name": "Changshe",
+    "type": "city",
+    "capital": false,
+    "x": 1426.8,
+    "y": 689.0
+  },
+  {
+    "name": "Changyi",
+    "type": "city",
+    "capital": true,
+    "x": 1573.2,
+    "y": 664.9
+  },
+  {
+    "name": "Chaoxian",
+    "type": "city",
+    "capital": true,
+    "x": 2145.0,
+    "y": 413.9
+  },
+  {
+    "name": "Chen",
+    "type": "city",
+    "capital": true,
+    "x": 1500.0,
+    "y": 734.9
+  },
+  {
+    "name": "Chen",
+    "type": "city",
+    "capital": true,
+    "x": 1376.0,
+    "y": 1221.9
+  },
+  {
+    "name": "Chencang",
+    "type": "city",
+    "capital": false,
+    "x": 1011.0,
+    "y": 687.9
+  },
+  {
+    "name": "Chengdu",
+    "type": "city",
+    "capital": true,
+    "x": 829.2,
+    "y": 928.9
+  },
+  {
+    "name": "Chenliu",
+    "type": "city",
+    "capital": true,
+    "x": 1475.2,
+    "y": 691.9
+  },
+  {
+    "name": "Dai",
+    "type": "city",
+    "capital": true,
+    "x": 1471.2,
+    "y": 360.9
+  },
+  {
+    "name": "Daifang",
+    "type": "city",
+    "capital": true,
+    "x": 2143.2,
+    "y": 462.9
+  },
+  {
+    "name": "Dang",
+    "type": "city",
+    "capital": false,
+    "x": 1573.6,
+    "y": 709.9
+  },
+  {
+    "name": "Dangqu",
+    "type": "city",
+    "capital": true,
+    "x": 1020.5,
+    "y": 891.9
+  },
+  {
+    "name": "Dangyang",
+    "type": "city",
+    "capital": false,
+    "x": 1316.0,
+    "y": 900.9
+  },
+  {
+    "name": "Danyang",
+    "type": "city",
+    "capital": false,
+    "x": 1728.2,
+    "y": 871.9
+  },
+  {
+    "name": "Dianchi",
+    "type": "city",
+    "capital": true,
+    "x": 752.2,
+    "y": 1288.9
+  },
+  {
+    "name": "Didao",
+    "type": "city",
+    "capital": true,
+    "x": 844.7,
+    "y": 632.9
+  },
+  {
+    "name": "Dingtao",
+    "type": "city",
+    "capital": true,
+    "x": 1527.2,
+    "y": 649.9
+  },
+  {
+    "name": "Dongguan",
+    "type": "city",
+    "capital": true,
+    "x": 1696.0,
+    "y": 606.9
+  },
+  {
+    "name": "Dongguang",
+    "type": "city",
+    "capital": false,
+    "x": 1617.7,
+    "y": 492.7
+  },
+  {
+    "name": "Dongpingling",
+    "type": "city",
+    "capital": true,
+    "x": 1645.0,
+    "y": 549.2
+  },
+  {
+    "name": "Dongpingshu",
+    "type": "city",
+    "capital": true,
+    "x": 1634.2,
+    "y": 441.9
+  },
+  {
+    "name": "Dongwu",
+    "type": "city",
+    "capital": true,
+    "x": 1761.5,
+    "y": 611.9
+  },
+  {
+    "name": "Duling",
+    "type": "city",
+    "capital": false,
+    "x": 1145.5,
+    "y": 717.9
+  },
+  {
+    "name": "Dunhuang",
+    "type": "city",
+    "capital": true,
+    "x": 292.0,
+    "y": 365.9
+  },
+  {
+    "name": "Dunqiu",
+    "type": "city",
+    "capital": false,
+    "x": 1509.5,
+    "y": 594.9
+  },
+  {
+    "name": "Fangling",
+    "type": "city",
+    "capital": true,
+    "x": 1262.0,
+    "y": 840.9
+  },
+  {
+    "name": "Fangzi",
+    "type": "city",
+    "capital": true,
+    "x": 1460.5,
+    "y": 514.9
+  },
+  {
+    "name": "Fanyang",
+    "type": "city",
+    "capital": false,
+    "x": 1533.2,
+    "y": 419.9
+  },
+  {
+    "name": "Fenggao",
+    "type": "city",
+    "capital": true,
+    "x": 1641.2,
+    "y": 583.9
+  },
+  {
+    "name": "Fuli",
+    "type": "city",
+    "capital": false,
+    "x": 1637.0,
+    "y": 754.9
+  },
+  {
+    "name": "Fuling",
+    "type": "city",
+    "capital": false,
+    "x": 1088.5,
+    "y": 991.9
+  },
+  {
+    "name": "Ganling",
+    "type": "city",
+    "capital": true,
+    "x": 1544.2,
+    "y": 552.9
+  },
+  {
+    "name": "Gaoling",
+    "type": "city",
+    "capital": true,
+    "x": 1148.2,
+    "y": 680.9
+  },
+  {
+    "name": "Gaomi",
+    "type": "city",
+    "capital": false,
+    "x": 1766.3,
+    "y": 577.9
+  },
+  {
+    "name": "Gaotang",
+    "type": "city",
+    "capital": false,
+    "x": 1587.2,
+    "y": 560.9
+  },
+  {
+    "name": "Gaoyang",
+    "type": "city",
+    "capital": false,
+    "x": 1570.2,
+    "y": 441.9
+  },
+  {
+    "name": "Gouzhang",
+    "type": "city",
+    "capital": false,
+    "x": 1885.9,
+    "y": 972.7
+  },
+  {
+    "name": "Guangchuan",
+    "type": "city",
+    "capital": false,
+    "x": 1566.5,
+    "y": 515.0
+  },
+  {
+    "name": "Guanghan",
+    "type": "city",
+    "capital": false,
+    "x": 922.0,
+    "y": 925.9
+  },
+  {
+    "name": "Guangling",
+    "type": "city",
+    "capital": true,
+    "x": 1787.3,
+    "y": 808.9
+  },
+  {
+    "name": "Guangxin",
+    "type": "city",
+    "capital": true,
+    "x": 1283.0,
+    "y": 1357.9
+  },
+  {
+    "name": "Guantao",
+    "type": "city",
+    "capital": false,
+    "x": 1510.2,
+    "y": 575.9
+  },
+  {
+    "name": "Guzang",
+    "type": "city",
+    "capital": true,
+    "x": 752.5,
+    "y": 496.9
+  },
+  {
+    "name": "Guzhang",
+    "type": "city",
+    "capital": false,
+    "x": 1760.2,
+    "y": 918.9
+  },
+  {
+    "name": "Handan",
+    "type": "city",
+    "capital": false,
+    "x": 1442.5,
+    "y": 566.9
+  },
+  {
+    "name": "Hanjia",
+    "type": "city",
+    "capital": false,
+    "x": 786.5,
+    "y": 952.9
+  },
+  {
+    "name": "Hefei",
+    "type": "city",
+    "capital": false,
+    "x": 1633.7,
+    "y": 839.9
+  },
+  {
+    "name": "Hepu",
+    "type": "city",
+    "capital": true,
+    "x": 1165.0,
+    "y": 1433.9
+  },
+  {
+    "name": "Hongnong",
+    "type": "city",
+    "capital": true,
+    "x": 1249.0,
+    "y": 688.9
+  },
+  {
+    "name": "Houguan",
+    "type": "city",
+    "capital": false,
+    "x": 1751.2,
+    "y": 1185.9
+  },
+  {
+    "name": "Huai",
+    "type": "city",
+    "capital": true,
+    "x": 1403.0,
+    "y": 647.9
+  },
+  {
+    "name": "Huaili",
+    "type": "city",
+    "capital": true,
+    "x": 1092.5,
+    "y": 696.9
+  },
+  {
+    "name": "Huaiyin",
+    "type": "city",
+    "capital": true,
+    "x": 1748.8,
+    "y": 759.9
+  },
+  {
+    "name": "Huang",
+    "type": "city",
+    "capital": true,
+    "x": 1849.7,
+    "y": 506.9
+  },
+  {
+    "name": "Huayin",
+    "type": "city",
+    "capital": false,
+    "x": 1213.5,
+    "y": 691.9
+  },
+  {
+    "name": "Huguan",
+    "type": "city",
+    "capital": true,
+    "x": 1394.5,
+    "y": 585.9
+  },
+  {
+    "name": "Ji",
+    "type": "city",
+    "capital": true,
+    "x": 924.5,
+    "y": 689.9
+  },
+  {
+    "name": "Ji",
+    "type": "city",
+    "capital": true,
+    "x": 1586.5,
+    "y": 371.9
+  },
+  {
+    "name": "Ji",
+    "type": "city",
+    "capital": false,
+    "x": 1438.5,
+    "y": 630.9
+  },
+  {
+    "name": "Jian'an",
+    "type": "city",
+    "capital": false,
+    "x": 1717.2,
+    "y": 1146.9
+  },
+  {
+    "name": "Jiangling",
+    "type": "city",
+    "capital": true,
+    "x": 1331.7,
+    "y": 929.9
+  },
+  {
+    "name": "Jiangyang",
+    "type": "city",
+    "capital": true,
+    "x": 921.7,
+    "y": 1033.9
+  },
+  {
+    "name": "Jiangzhou",
+    "type": "city",
+    "capital": true,
+    "x": 987.7,
+    "y": 994.9
+  },
+  {
+    "name": "Jianye",
+    "type": "city",
+    "capital": true,
+    "x": 1734.5,
+    "y": 847.9
+  },
+  {
+    "name": "Jinyang",
+    "type": "city",
+    "capital": true,
+    "x": 1344.2,
+    "y": 504.9
+  },
+  {
+    "name": "Jiuyuan",
+    "type": "city",
+    "capital": true,
+    "x": 1378.2,
+    "y": 455.9
+  },
+  {
+    "name": "Ju",
+    "type": "city",
+    "capital": true,
+    "x": 1723.5,
+    "y": 567.9
+  },
+  {
+    "name": "Ju",
+    "type": "city",
+    "capital": false,
+    "x": 1734.1,
+    "y": 629.9
+  },
+  {
+    "name": "Juancheng",
+    "type": "city",
+    "capital": false,
+    "x": 1530.7,
+    "y": 626.9
+  },
+  {
+    "name": "Julu",
+    "type": "city",
+    "capital": false,
+    "x": 1498.0,
+    "y": 531.9
+  },
+  {
+    "name": "Junyi",
+    "type": "city",
+    "capital": false,
+    "x": 1481.6,
+    "y": 671.0
+  },
+  {
+    "name": "Juyan",
+    "type": "city",
+    "capital": true,
+    "x": 667.7,
+    "y": 259.9
+  },
+  {
+    "name": "Juyang",
+    "type": "city",
+    "capital": false,
+    "x": 1531.5,
+    "y": 350.9
+  },
+  {
+    "name": "Juyong",
+    "type": "city",
+    "capital": true,
+    "x": 1547.5,
+    "y": 325.9
+  },
+  {
+    "name": "Kaiyang",
+    "type": "city",
+    "capital": true,
+    "x": 1695.8,
+    "y": 646.9
+  },
+  {
+    "name": "Langzhong",
+    "type": "city",
+    "capital": true,
+    "x": 958.7,
+    "y": 866.9
+  },
+  {
+    "name": "Lanling",
+    "type": "city",
+    "capital": false,
+    "x": 1664.1,
+    "y": 684.0
+  },
+  {
+    "name": "Lecheng",
+    "type": "city",
+    "capital": true,
+    "x": 1568.2,
+    "y": 480.9
+  },
+  {
+    "name": "Leilou",
+    "type": "city",
+    "capital": false,
+    "x": 945.5,
+    "y": 1486.9
+  },
+  {
+    "name": "Liaodui",
+    "type": "city",
+    "capital": false,
+    "x": 1954.2,
+    "y": 301.9
+  },
+  {
+    "name": "Licheng",
+    "type": "city",
+    "capital": false,
+    "x": 1637.2,
+    "y": 566.0
+  },
+  {
+    "name": "Licheng",
+    "type": "city",
+    "capital": true,
+    "x": 1737.8,
+    "y": 682.9
+  },
+  {
+    "name": "Lincheng",
+    "type": "city",
+    "capital": true,
+    "x": 1670.0,
+    "y": 930.9
+  },
+  {
+    "name": "Lingqiu",
+    "type": "city",
+    "capital": false,
+    "x": 1479.2,
+    "y": 393.9
+  },
+  {
+    "name": "Lingshou",
+    "type": "city",
+    "capital": false,
+    "x": 1437.0,
+    "y": 464.5
+  },
+  {
+    "name": "Linji",
+    "type": "city",
+    "capital": true,
+    "x": 1673.7,
+    "y": 528.9
+  },
+  {
+    "name": "Linjin",
+    "type": "city",
+    "capital": false,
+    "x": 1204.5,
+    "y": 662.9
+  },
+  {
+    "name": "Linjing",
+    "type": "city",
+    "capital": true,
+    "x": 1042.2,
+    "y": 622.9
+  },
+  {
+    "name": "Linqiong",
+    "type": "city",
+    "capital": false,
+    "x": 789.0,
+    "y": 924.9
+  },
+  {
+    "name": "Linqiu",
+    "type": "city",
+    "capital": false,
+    "x": 1550.1,
+    "y": 612.9
+  },
+  {
+    "name": "Linxiang",
+    "type": "city",
+    "capital": true,
+    "x": 1400.0,
+    "y": 1058.9
+  },
+  {
+    "name": "Linyuan",
+    "type": "city",
+    "capital": true,
+    "x": 1299.2,
+    "y": 1008.9
+  },
+  {
+    "name": "Linzi",
+    "type": "city",
+    "capital": true,
+    "x": 1694.7,
+    "y": 557.9
+  },
+  {
+    "name": "Lishi",
+    "type": "city",
+    "capital": true,
+    "x": 1279.7,
+    "y": 510.9
+  },
+  {
+    "name": "Liyang",
+    "type": "city",
+    "capital": false,
+    "x": 1687.5,
+    "y": 848.9
+  },
+  {
+    "name": "Longbian",
+    "type": "city",
+    "capital": true,
+    "x": 981.0,
+    "y": 1501.9
+  },
+  {
+    "name": "Lu",
+    "type": "city",
+    "capital": true,
+    "x": 1591.5,
+    "y": 576.9
+  },
+  {
+    "name": "Lu",
+    "type": "city",
+    "capital": true,
+    "x": 1622.5,
+    "y": 624.9
+  },
+  {
+    "name": "Lu'an",
+    "type": "city",
+    "capital": true,
+    "x": 1591.7,
+    "y": 858.9
+  },
+  {
+    "name": "Lude",
+    "type": "city",
+    "capital": true,
+    "x": 597.0,
+    "y": 421.9
+  },
+  {
+    "name": "Lufu",
+    "type": "city",
+    "capital": true,
+    "x": 512.0,
+    "y": 386.9
+  },
+  {
+    "name": "Lunu",
+    "type": "city",
+    "capital": true,
+    "x": 1499.0,
+    "y": 457.9
+  },
+  {
+    "name": "Luo",
+    "type": "city",
+    "capital": true,
+    "x": 870.2,
+    "y": 898.9
+  },
+  {
+    "name": "Luoyang",
+    "type": "city",
+    "capital": true,
+    "x": 1354.2,
+    "y": 685.9
+  },
+  {
+    "name": "Mianchi",
+    "type": "city",
+    "capital": false,
+    "x": 1300.5,
+    "y": 697.7
+  },
+  {
+    "name": "Mianzhu",
+    "type": "city",
+    "capital": false,
+    "x": 862.2,
+    "y": 875.9
+  },
+  {
+    "name": "Nanchang",
+    "type": "city",
+    "capital": true,
+    "x": 1523.0,
+    "y": 1032.9
+  },
+  {
+    "name": "Nancheng",
+    "type": "city",
+    "capital": false,
+    "x": 1595.0,
+    "y": 1141.9
+  },
+  {
+    "name": "Nanpi",
+    "type": "city",
+    "capital": true,
+    "x": 1616.7,
+    "y": 476.9
+  },
+  {
+    "name": "Nanxiang",
+    "type": "city",
+    "capital": true,
+    "x": 1276.0,
+    "y": 792.9
+  },
+  {
+    "name": "Nanzheng",
+    "type": "city",
+    "capital": true,
+    "x": 1017.0,
+    "y": 784.9
+  },
+  {
+    "name": "Neihuang",
+    "type": "city",
+    "capital": false,
+    "x": 1476.0,
+    "y": 607.9
+  },
+  {
+    "name": "Panyu",
+    "type": "city",
+    "capital": true,
+    "x": 1390.7,
+    "y": 1362.9
+  },
+  {
+    "name": "Pei",
+    "type": "city",
+    "capital": false,
+    "x": 1606.2,
+    "y": 690.9
+  },
+  {
+    "name": "Pengcheng",
+    "type": "city",
+    "capital": true,
+    "x": 1630.3,
+    "y": 721.9
+  },
+  {
+    "name": "Piling",
+    "type": "city",
+    "capital": false,
+    "x": 1791.5,
+    "y": 861.9
+  },
+  {
+    "name": "Pingcheng",
+    "type": "city",
+    "capital": true,
+    "x": 1376.7,
+    "y": 424.9
+  },
+  {
+    "name": "Pingyang",
+    "type": "city",
+    "capital": false,
+    "x": 1285.0,
+    "y": 583.9
+  },
+  {
+    "name": "Pingyu",
+    "type": "city",
+    "capital": true,
+    "x": 1480.5,
+    "y": 762.9
+  },
+  {
+    "name": "Pingyuan",
+    "type": "city",
+    "capital": true,
+    "x": 1601.0,
+    "y": 530.9
+  },
+  {
+    "name": "Poyang",
+    "type": "city",
+    "capital": true,
+    "x": 1602.5,
+    "y": 1007.9
+  },
+  {
+    "name": "Poyang",
+    "type": "city",
+    "capital": true,
+    "x": 1602.5,
+    "y": 1007.9
+  },
+  {
+    "name": "Puban",
+    "type": "city",
+    "capital": false,
+    "x": 1232.7,
+    "y": 661.9
+  },
+  {
+    "name": "Puyang",
+    "type": "city",
+    "capital": true,
+    "x": 1494.5,
+    "y": 634.9
+  },
+  {
+    "name": "Puyin",
+    "type": "city",
+    "capital": false,
+    "x": 1500.7,
+    "y": 426.4
+  },
+  {
+    "name": "Qi",
+    "type": "city",
+    "capital": true,
+    "x": 1085.5,
+    "y": 652.9
+  },
+  {
+    "name": "Qi",
+    "type": "city",
+    "capital": false,
+    "x": 888.5,
+    "y": 906.9
+  },
+  {
+    "name": "Qiantang",
+    "type": "city",
+    "capital": false,
+    "x": 1802.9,
+    "y": 951.9
+  },
+  {
+    "name": "Qiao",
+    "type": "city",
+    "capital": true,
+    "x": 1553.0,
+    "y": 719.9
+  },
+  {
+    "name": "Qichun",
+    "type": "city",
+    "capital": true,
+    "x": 1525.5,
+    "y": 943.9
+  },
+  {
+    "name": "Qielan",
+    "type": "city",
+    "capital": true,
+    "x": 1044.5,
+    "y": 1136.9
+  },
+  {
+    "name": "Qingyang",
+    "type": "city",
+    "capital": false,
+    "x": 1367.5,
+    "y": 796.6
+  },
+  {
+    "name": "Qiongdu",
+    "type": "city",
+    "capital": true,
+    "x": 754.2,
+    "y": 1077.9
+  },
+  {
+    "name": "Quanling",
+    "type": "city",
+    "capital": true,
+    "x": 1289.0,
+    "y": 1194.9
+  },
+  {
+    "name": "Qujiang",
+    "type": "city",
+    "capital": false,
+    "x": 1414.2,
+    "y": 1282.9
+  },
+  {
+    "name": "Quliang",
+    "type": "city",
+    "capital": false,
+    "x": 1470.2,
+    "y": 548.9
+  },
+  {
+    "name": "Quren",
+    "type": "city",
+    "capital": false,
+    "x": 1121.7,
+    "y": 911.9
+  },
+  {
+    "name": "Rencheng",
+    "type": "city",
+    "capital": true,
+    "x": 1601.0,
+    "y": 638.9
+  },
+  {
+    "name": "Rile",
+    "type": "city",
+    "capital": true,
+    "x": 684.0,
+    "y": 471.9
+  },
+  {
+    "name": "Ruyin",
+    "type": "city",
+    "capital": false,
+    "x": 1559.7,
+    "y": 781.9
+  },
+  {
+    "name": "Shanfu",
+    "type": "city",
+    "capital": false,
+    "x": 1542.5,
+    "y": 682.5
+  },
+  {
+    "name": "Shangrao",
+    "type": "city",
+    "capital": false,
+    "x": 1691.0,
+    "y": 1044.9
+  },
+  {
+    "name": "Shangyong",
+    "type": "city",
+    "capital": true,
+    "x": 1197.7,
+    "y": 819.9
+  },
+  {
+    "name": "Shanyin",
+    "type": "city",
+    "capital": true,
+    "x": 1832.2,
+    "y": 969.9
+  },
+  {
+    "name": "Shaxian",
+    "type": "city",
+    "capital": true,
+    "x": 1443.2,
+    "y": 949.9
+  },
+  {
+    "name": "She",
+    "type": "city",
+    "capital": false,
+    "x": 1696.2,
+    "y": 967.9
+  },
+  {
+    "name": "Shi'an",
+    "type": "city",
+    "capital": false,
+    "x": 1234.5,
+    "y": 1240.9
+  },
+  {
+    "name": "Shixin",
+    "type": "city",
+    "capital": true,
+    "x": 1726.5,
+    "y": 994.9
+  },
+  {
+    "name": "Shiyang",
+    "type": "city",
+    "capital": true,
+    "x": 1390.2,
+    "y": 912.9
+  },
+  {
+    "name": "Shouchun",
+    "type": "city",
+    "capital": false,
+    "x": 1614.0,
+    "y": 816.9
+  },
+  {
+    "name": "Shouguang",
+    "type": "city",
+    "capital": false,
+    "x": 1759.7,
+    "y": 553.3
+  },
+  {
+    "name": "Shu",
+    "type": "city",
+    "capital": false,
+    "x": 1631.2,
+    "y": 886.9
+  },
+  {
+    "name": "Sihui",
+    "type": "city",
+    "capital": false,
+    "x": 1364.7,
+    "y": 1349.9
+  },
+  {
+    "name": "Sui",
+    "type": "city",
+    "capital": false,
+    "x": 1400.2,
+    "y": 864.8
+  },
+  {
+    "name": "Suiling",
+    "type": "city",
+    "capital": false,
+    "x": 1680.8,
+    "y": 740.9
+  },
+  {
+    "name": "Suiyang",
+    "type": "city",
+    "capital": true,
+    "x": 1534.2,
+    "y": 699.9
+  },
+  {
+    "name": "Tan",
+    "type": "city",
+    "capital": true,
+    "x": 1689.8,
+    "y": 692.9
+  },
+  {
+    "name": "Tuyin",
+    "type": "city",
+    "capital": true,
+    "x": 1678.7,
+    "y": 384.9
+  },
+  {
+    "name": "Wan",
+    "type": "city",
+    "capital": true,
+    "x": 1592.2,
+    "y": 931.9
+  },
+  {
+    "name": "Wan",
+    "type": "city",
+    "capital": true,
+    "x": 1329.2,
+    "y": 776.9
+  },
+  {
+    "name": "Wanling",
+    "type": "city",
+    "capital": false,
+    "x": 1729.2,
+    "y": 906.9
+  },
+  {
+    "name": "Wei",
+    "type": "city",
+    "capital": false,
+    "x": 813.2,
+    "y": 1241.9
+  },
+  {
+    "name": "Wenjiang",
+    "type": "city",
+    "capital": true,
+    "x": 828.0,
+    "y": 862.9
+  },
+  {
+    "name": "Wu",
+    "type": "city",
+    "capital": true,
+    "x": 1825.5,
+    "y": 876.9
+  },
+  {
+    "name": "Wu",
+    "type": "city",
+    "capital": true,
+    "x": 1187.5,
+    "y": 902.9
+  },
+  {
+    "name": "Wucheng",
+    "type": "city",
+    "capital": false,
+    "x": 1823.2,
+    "y": 916.9
+  },
+  {
+    "name": "Wushang",
+    "type": "city",
+    "capital": false,
+    "x": 1801.1,
+    "y": 1009.7
+  },
+  {
+    "name": "Wuwei",
+    "type": "city",
+    "capital": false,
+    "x": 798.7,
+    "y": 442.9
+  },
+  {
+    "name": "Wuxi",
+    "type": "city",
+    "capital": false,
+    "x": 1815.0,
+    "y": 858.9
+  },
+  {
+    "name": "Wuyan",
+    "type": "city",
+    "capital": true,
+    "x": 1572.7,
+    "y": 601.9
+  },
+  {
+    "name": "Wuyang",
+    "type": "city",
+    "capital": true,
+    "x": 829.5,
+    "y": 950.9
+  },
+  {
+    "name": "Wuzhong",
+    "type": "city",
+    "capital": false,
+    "x": 1660.2,
+    "y": 355.9
+  },
+  {
+    "name": "XU",
+    "type": "city",
+    "capital": true,
+    "x": 1423.5,
+    "y": 711.9
+  },
+  {
+    "name": "Xiabian",
+    "type": "city",
+    "capital": true,
+    "x": 945.2,
+    "y": 738.9
+  },
+  {
+    "name": "Xiang",
+    "type": "city",
+    "capital": true,
+    "x": 1589.7,
+    "y": 732.9
+  },
+  {
+    "name": "Xiangnan",
+    "type": "city",
+    "capital": false,
+    "x": 1354.0,
+    "y": 1100.9
+  },
+  {
+    "name": "Xiangping",
+    "type": "city",
+    "capital": true,
+    "x": 2000.7,
+    "y": 293.9
+  },
+  {
+    "name": "Xiangwu",
+    "type": "city",
+    "capital": false,
+    "x": 877.2,
+    "y": 653.9
+  },
+  {
+    "name": "Xiangyang",
+    "type": "city",
+    "capital": true,
+    "x": 1340.7,
+    "y": 830.9
+  },
+  {
+    "name": "Xiapi",
+    "type": "city",
+    "capital": true,
+    "x": 1693.3,
+    "y": 716.9
+  },
+  {
+    "name": "Xichang",
+    "type": "city",
+    "capital": true,
+    "x": 1487.2,
+    "y": 1162.9
+  },
+  {
+    "name": "Xicheng",
+    "type": "city",
+    "capital": true,
+    "x": 1135.2,
+    "y": 786.9
+  },
+  {
+    "name": "Xidu",
+    "type": "city",
+    "capital": true,
+    "x": 706.0,
+    "y": 557.9
+  },
+  {
+    "name": "Xincai",
+    "type": "city",
+    "capital": false,
+    "x": 1511.5,
+    "y": 801.9
+  },
+  {
+    "name": "Xindu",
+    "type": "city",
+    "capital": false,
+    "x": 865.7,
+    "y": 913.9
+  },
+  {
+    "name": "Xindu",
+    "type": "city",
+    "capital": true,
+    "x": 1531.7,
+    "y": 499.9
+  },
+  {
+    "name": "Xingyang",
+    "type": "city",
+    "capital": false,
+    "x": 1426.0,
+    "y": 671.9
+  },
+  {
+    "name": "Xinxi",
+    "type": "city",
+    "capital": false,
+    "x": 1482.7,
+    "y": 809.9
+  },
+  {
+    "name": "Xinye",
+    "type": "city",
+    "capital": false,
+    "x": 1323.7,
+    "y": 807.9
+  },
+  {
+    "name": "Xiping",
+    "type": "city",
+    "capital": false,
+    "x": 1426.5,
+    "y": 765.9
+  },
+  {
+    "name": "Xiquan",
+    "type": "city",
+    "capital": true,
+    "x": 1007.5,
+    "y": 1741.9
+  },
+  {
+    "name": "Xuchang",
+    "type": "city",
+    "capital": true,
+    "x": 1414.3,
+    "y": 721.9
+  },
+  {
+    "name": "Xupu",
+    "type": "city",
+    "capital": true,
+    "x": 932.0,
+    "y": 1578.9
+  },
+  {
+    "name": "Xuwen",
+    "type": "city",
+    "capital": false,
+    "x": 1208.7,
+    "y": 1535.9
+  },
+  {
+    "name": "Yanci",
+    "type": "city",
+    "capital": true,
+    "x": 1656.7,
+    "y": 514.9
+  },
+  {
+    "name": "Yandu",
+    "type": "city",
+    "capital": false,
+    "x": 1797.4,
+    "y": 772.9
+  },
+  {
+    "name": "Yangcheng",
+    "type": "city",
+    "capital": false,
+    "x": 1357.4,
+    "y": 701.3
+  },
+  {
+    "name": "Yangdi",
+    "type": "city",
+    "capital": false,
+    "x": 1409.3,
+    "y": 699.3
+  },
+  {
+    "name": "Yangle",
+    "type": "city",
+    "capital": true,
+    "x": 1839.5,
+    "y": 282.9
+  },
+  {
+    "name": "Yangqu",
+    "type": "city",
+    "capital": false,
+    "x": 1369.5,
+    "y": 489.5
+  },
+  {
+    "name": "Yangxin",
+    "type": "city",
+    "capital": false,
+    "x": 1485.2,
+    "y": 982.9
+  },
+  {
+    "name": "Ye",
+    "type": "city",
+    "capital": true,
+    "x": 1455.5,
+    "y": 593.9
+  },
+  {
+    "name": "Yewang",
+    "type": "city",
+    "capital": false,
+    "x": 1367.5,
+    "y": 659.9
+  },
+  {
+    "name": "Yicheng",
+    "type": "city",
+    "capital": false,
+    "x": 1336.2,
+    "y": 856.2
+  },
+  {
+    "name": "Yichun",
+    "type": "city",
+    "capital": false,
+    "x": 1463.5,
+    "y": 1078.9
+  },
+  {
+    "name": "Yidu",
+    "type": "city",
+    "capital": true,
+    "x": 1271.0,
+    "y": 931.9
+  },
+  {
+    "name": "Yingling",
+    "type": "city",
+    "capital": false,
+    "x": 1757.0,
+    "y": 563.9
+  },
+  {
+    "name": "Yingtao",
+    "type": "city",
+    "capital": true,
+    "x": 1501.2,
+    "y": 515.9
+  },
+  {
+    "name": "Yinling",
+    "type": "city",
+    "capital": true,
+    "x": 1639.2,
+    "y": 793.9
+  },
+  {
+    "name": "Yinping",
+    "type": "city",
+    "capital": true,
+    "x": 883.2,
+    "y": 796.9
+  },
+  {
+    "name": "Yiyang",
+    "type": "city",
+    "capital": true,
+    "x": 1501.5,
+    "y": 827.9
+  },
+  {
+    "name": "Yong",
+    "type": "city",
+    "capital": true,
+    "x": 1047.0,
+    "y": 681.9
+  },
+  {
+    "name": "Yuanwu",
+    "type": "city",
+    "capital": false,
+    "x": 1428.5,
+    "y": 662.9
+  },
+  {
+    "name": "Yudu",
+    "type": "city",
+    "capital": false,
+    "x": 1521.0,
+    "y": 1212.9
+  },
+  {
+    "name": "Yufu",
+    "type": "city",
+    "capital": true,
+    "x": 1170.0,
+    "y": 887.9
+  },
+  {
+    "name": "Yumen",
+    "type": "city",
+    "capital": false,
+    "x": 444.7,
+    "y": 365.9
+  },
+  {
+    "name": "Yunnan",
+    "type": "city",
+    "capital": false,
+    "x": 640.5,
+    "y": 1223.9
+  },
+  {
+    "name": "Yunwu",
+    "type": "city",
+    "capital": true,
+    "x": 791.7,
+    "y": 583.9
+  },
+  {
+    "name": "Yuyang",
+    "type": "city",
+    "capital": true,
+    "x": 1604.5,
+    "y": 346.9
+  },
+  {
+    "name": "Zhan",
+    "type": "city",
+    "capital": true,
+    "x": 1416.0,
+    "y": 500.9
+  },
+  {
+    "name": "Zhangling",
+    "type": "city",
+    "capital": true,
+    "x": 1390.7,
+    "y": 843.9
+  },
+  {
+    "name": "Zhangzi",
+    "type": "city",
+    "capital": false,
+    "x": 1374.2,
+    "y": 601.9
+  },
+  {
+    "name": "Zhending",
+    "type": "city",
+    "capital": true,
+    "x": 1464.0,
+    "y": 480.9
+  },
+  {
+    "name": "Zhi",
+    "type": "city",
+    "capital": false,
+    "x": 1050.2,
+    "y": 979.9
+  },
+  {
+    "name": "Zhuo",
+    "type": "city",
+    "capital": true,
+    "x": 1549.0,
+    "y": 401.9
+  },
+  {
+    "name": "Zhuti",
+    "type": "city",
+    "capital": true,
+    "x": 815.7,
+    "y": 1126.9
+  },
+  {
+    "name": "Zitong",
+    "type": "city",
+    "capital": true,
+    "x": 906.5,
+    "y": 852.9
+  }
+]
