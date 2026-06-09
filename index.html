@@ -336,11 +336,11 @@
     </button>
     <div class="popup-panel" id="download-panel" hidden>
       <div class="settings-row">
-        <a href="data/rhyme.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size"></span>)</a>
+        <a href="data/rhyme.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size" data-size-of="data/rhyme.txt">, 132 KB</span>)</a>
         <div class="settings-note">Main text only.</div>
       </div>
       <div class="settings-row">
-        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size"></span>)</a>
+        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 470 KB</span>)</a>
         <div class="settings-note">Main text with annotations.</div>
       </div>
     </div>
@@ -501,30 +501,6 @@ function renderTagged(text) {
   }
   html += escapeHtml(text.slice(last)).replace(/\n/g, '<br>');
   return html;
-}
-
-function formatBytes(n) {
-  if (n >= 1024 * 1024) return (n / (1024 * 1024)).toFixed(1) + ' MB';
-  if (n >= 1024) return Math.round(n / 1024) + ' KB';
-  return n + ' B';
-}
-
-// Annotate each download link with its file size via a HEAD request (headers
-// only, no body downloaded). Skipped in the offline standalone, where the
-// data/ links don't resolve anyway.
-function showDownloadSizes() {
-  if (STANDALONE) return;
-  document.querySelectorAll('#download-panel .settings-row').forEach(row => {
-    const link = row.querySelector('a');
-    const target = row.querySelector('.dl-size');
-    if (!link || !target) return;
-    fetch(link.getAttribute('href'), { method: 'HEAD' })
-      .then(r => {
-        const len = r.ok ? r.headers.get('Content-Length') : null;
-        if (len) target.textContent = ', ' + formatBytes(Number(len));
-      })
-      .catch(() => {});
-  });
 }
 
 function liveDataUrl(path) {
@@ -872,8 +848,6 @@ app.addEventListener('click', (e) => {
   wirePopup('settings-toggle', 'settings-panel');
   wirePopup('download-toggle', 'download-panel');
   wirePopup('contact-toggle', 'contact-panel');
-
-  showDownloadSizes();
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.popup-host, .contact-host')) closeAll();
