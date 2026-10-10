@@ -7,8 +7,27 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     /* ---- index page ---- */
-    .index-list { list-style: none; padding: 0; max-width: 720px; margin: 0 auto; }
+    .index-list { list-style: none; padding: 0; max-width: 960px; margin: 0 auto; }
     .index-list .chapter-label.untranslated { color: var(--muted); }
+    /* Chapter number at the left, the title couplet stacked to its right. */
+    .index-list .chapter-label {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.2rem 0.9rem;
+    }
+    .index-list .index-n { flex: none; }
+    /* Only the chapter number carries the link colour; the couplet reads as
+       body text. The whole label is still one <a>, so all of it is clickable. */
+    .index-list .index-couplet {
+      line-height: 1.5;
+      color: var(--fg);
+    }
+    .index-list .chapter-label.untranslated .index-couplet { color: var(--muted); }
+    /* Hovering the row underlines the chapter number only; the couplet is
+       part of the same link but reads as text, so it stays unmarked. */
+    .index-list a.chapter-label:hover { text-decoration: none; }
+    .index-list a.chapter-label:hover .index-n { text-decoration: underline; }
     .index-list li {
       padding: 0.55rem 0;
       border-bottom: 1px dotted var(--border);
@@ -43,15 +62,12 @@
       margin: 0 0 0.4rem;
       line-height: 1.4;
     }
-    .chapter-title h2.clickable {
-      display: inline-block;
-      padding: 0.4rem 0.9rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.12s;
+    .chapter-couplet {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--muted);
     }
-    .chapter-title h2.clickable:hover { background: rgba(106, 77, 42, 0.05); }
-    .chapter-title h2.clickable.selected { background: var(--highlight); }
 
     .corner-toolbar {
       position: fixed;
@@ -178,15 +194,15 @@
 
     .chapter-layout {
       display: grid;
-      grid-template-areas: "detail rhyme explanation";
+      /* Empty first column balances the annotation panel, so the text
+         column stays centred on the page. */
+      grid-template-areas: ". prose explanation";
       grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr) minmax(280px, 1fr);
       gap: 2rem;
       align-items: start;
     }
-    .detail-panel { grid-area: detail; }
-    .rhyme-column { grid-area: rhyme; }
+    .prose-column { grid-area: prose; }
     .explanation-panel { grid-area: explanation; }
-    .detail-panel,
     .explanation-panel {
       position: sticky;
       top: 1rem;
@@ -228,13 +244,6 @@
     .close-panel:hover,
     .close-panel:focus-visible { color: var(--text); }
     .detail-text { margin: 0; }
-    .detail-text.original {
-      font-family: "Noto Serif SC", "Source Han Serif SC",
-                   "Songti SC", "SimSun", "STSong", serif;
-      font-size: 1.05rem;
-      line-height: 1.85;
-    }
-    .detail-text.untranslated { color: var(--muted); font-style: italic; }
     .annotation-name { font-weight: bold; margin-bottom: 0.3rem; color: var(--fg); font-variant: normal; letter-spacing: normal; font-size: 1rem; }
     .annotation-line { margin: 0; }
     .annotation-line + .annotation-line { margin-top: 0.4rem; }
@@ -260,50 +269,37 @@
       margin-left: 0.05em;
     }
 
-    .rhyme-column { max-width: 760px; margin: 0 auto; width: 100%; }
-    .rhyme-para {
+    .prose-column { max-width: 760px; margin: 0 auto; width: 100%; }
+    .prose-para {
       margin: 0 0 1.6rem;
       padding: 0.7rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.12s;
-      border-left: 3px solid transparent;
     }
-    .rhyme-para:hover { background: rgba(106, 77, 42, 0.05); }
-    .rhyme-para.selected {
-      background: var(--highlight);
-      border-left-color: var(--accent);
-    }
-    .rhyme-para.untranslated {
+    .prose-para.untranslated {
       color: var(--muted);
       font-style: italic;
-      cursor: default;
     }
-    .rhyme-para.untranslated:hover { background: transparent; }
-    .rhyme-para.no-click { cursor: default; }
-    .rhyme-para.no-click:hover { background: transparent; }
+    /* Inset verse: indented within its paragraph, not broken out of it. */
+    .verse {
+      display: block;
+      margin: 0.8rem 0 0.8rem 2.5rem;
+      line-height: 1.7;
+    }
 
     @media (max-width: 1100px) {
       .chapter-layout {
-        grid-template-areas:
-          "detail rhyme"
-          "explanation rhyme";
-        grid-template-columns: minmax(260px, 1fr) minmax(0, 1.7fr);
-        grid-template-rows: auto auto;
+        grid-template-areas: "prose explanation";
+        grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
       }
-      .detail-panel,
       .explanation-panel {
         position: static;
         max-height: none;
       }
-      .detail-panel { border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
     }
     @media (max-width: 800px) {
       .chapter-layout {
         grid-template-areas:
-          "detail"
           "explanation"
-          "rhyme";
+          "prose";
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
@@ -313,13 +309,7 @@
 <body>
 
 <header>
-  <div class="title-block">
-    <h1><a href="?">Romance of the Three Kingdoms</a></h1>
-    <div class="byline">
-      By Luo Guanzhong &middot;
-      Translated with AI assistance
-    </div>
-  </div>
+  <h1><a href="?">Romance of the Three Kingdoms</a></h1>
 </header>
 
 <div class="corner-toolbar">
@@ -336,11 +326,11 @@
     </button>
     <div class="popup-panel" id="download-panel" hidden>
       <div class="settings-row">
-        <a href="data/rhyme.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size" data-size-of="data/rhyme.txt">, 132 KB</span>)</a>
+        <a href="data/book.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size" data-size-of="data/book.txt">, 23 KB</span>)</a>
         <div class="settings-note">Main text only.</div>
       </div>
       <div class="settings-row">
-        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 470 KB</span>)</a>
+        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 74 KB</span>)</a>
         <div class="settings-note">Main text with annotations.</div>
       </div>
     </div>
@@ -391,8 +381,8 @@
       </div>
       <div class="settings-row">
         <label>
-          <input type="checkbox" id="show-sidebars">
-          Enable side panels
+          <input type="checkbox" id="show-annotations">
+          Enable annotations
         </label>
       </div>
     </div>
@@ -456,14 +446,13 @@ const state = {
   chapter: parseInt(params.get('ch'), 10) || null,
   main: null,
   chapterData: null,
-  selected: null,      // index of paragraph showing original/prose
   annotationId: null,  // id of currently displayed annotation
   annotationPara: null, // 1-based paragraph the displayed annotation was opened from
 };
 
 const settings = {
   showTitles: ls('showTitles') === '1',
-  showSidebars: ls('showSidebars') !== '0',
+  showAnnotations: ls('showAnnotations') !== '0',
 };
 
 const app = document.getElementById('app');
@@ -471,10 +460,6 @@ const app = document.getElementById('app');
 function escapeHtml(s) {
   return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 }
-function renderText(text) {
-  return escapeHtml(text).replace(/\n/g, '<br>');
-}
-
 // Strip [display](id) tags down to plain display text.
 function stripTags(text) {
   return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
@@ -500,6 +485,39 @@ function renderTagged(text) {
     last = re.lastIndex;
   }
   html += escapeHtml(text.slice(last)).replace(/\n/g, '<br>');
+  return html;
+}
+
+// Render one paragraph. Lines prefixed with "> " are inset verse: they are
+// grouped into an indented block that stays inside the paragraph.
+const VERSE_LINE = /^>[ \t]?(.*)$/;
+function renderParagraph(text, withTags) {
+  const renderLine = (line) =>
+    withTags ? renderTagged(line) : escapeHtml(stripTags(line));
+  let html = '';
+  let prose = [];
+  let verse = [];
+  const flushProse = () => {
+    if (prose.length) { html += prose.join('<br>'); prose = []; }
+  };
+  const flushVerse = () => {
+    if (verse.length) {
+      html += `<span class="verse">${verse.join('<br>')}</span>`;
+      verse = [];
+    }
+  };
+  for (const line of text.split('\n')) {
+    const m = VERSE_LINE.exec(line);
+    if (m) {
+      flushProse();
+      verse.push(renderLine(m[1]));
+    } else {
+      flushVerse();
+      prose.push(renderLine(line));
+    }
+  }
+  flushProse();
+  flushVerse();
   return html;
 }
 
@@ -558,65 +576,35 @@ async function loadChapter(n) {
   state.chapterData = await r.json();
 }
 
+// A chapter title is a couplet stored one half per line.
+function titleHalves(title) {
+  return title.split('\n').map(s => s.trim()).filter(Boolean);
+}
+
 function chapterStatus(c) {
   const total = c.paragraphs;
-  if (c.rhyme === 0) return ['', 'untranslated'];
-  if (c.rhyme === total) return ['done', 'complete'];
+  if (c.prose === 0) return ['', 'untranslated'];
+  if (c.prose === total) return ['done', 'complete'];
   return ['in-progress', 'in progress'];
 }
 
 function renderIndex() {
   const list = state.main.chapters.map(c => {
     const [cls, label] = chapterStatus(c);
-    const linkLabel = (settings.showTitles && c.title)
-      ? escapeHtml(c.title)
-      : ('Chapter ' + c.n);
-    const chapterLabel = c.rhyme === 0
-      ? `<span class="chapter-label untranslated">${linkLabel}</span>`
-      : `<a href="?ch=${c.n}">${linkLabel}</a>`;
+    const halves = (settings.showTitles && c.title) ? titleHalves(c.title) : [];
+    const inner = `<span class="index-n">Chapter ${c.n}</span>`
+      + (halves.length
+        ? `<span class="index-couplet">${halves.map(escapeHtml).join('<br>')}</span>`
+        : '');
+    const chapterLabel = c.prose === 0
+      ? `<span class="chapter-label untranslated">${inner}</span>`
+      : `<a class="chapter-label" href="?ch=${c.n}">${inner}</a>`;
     return `<li>
       ${chapterLabel}
       <span class="progress ${cls}">${label}</span>
     </li>`;
   }).join('');
   app.innerHTML = `<ul class="index-list">${list}</ul>`;
-}
-
-function renderDetail() {
-  const panel = document.getElementById('detail');
-  if (!panel) return;
-  if (state.selected === null) {
-    panel.innerHTML = '';
-    return;
-  }
-  let original, prose;
-  if (state.selected === 'title') {
-    const t = state.chapterData.title || {};
-    original = t.original;
-    prose = t.prose;
-  } else {
-    const p = state.chapterData.paragraphs[state.selected];
-    original = p.original;
-    prose = p.prose;
-  }
-  const origHtml = original
-    ? `<p class="detail-text original">${renderText(original)}</p>`
-    : `<p class="detail-text untranslated">—</p>`;
-  const proseHtml = prose
-    ? `<p class="detail-text">${renderText(prose)}</p>`
-    : `<p class="detail-text untranslated">—</p>`;
-  panel.innerHTML = `
-    <div class="detail-section">
-      <div class="detail-label">
-        <span>Original</span>
-        <button type="button" class="close-panel" data-close-panel="detail" aria-label="Close original and prose panel" title="Close">&times;</button>
-      </div>
-      ${origHtml}
-    </div>
-    <div class="detail-section">
-      <div class="detail-label">Prose</div>
-      ${proseHtml}
-    </div>`;
 }
 
 function renderExplanation() {
@@ -640,12 +628,6 @@ function renderExplanation() {
       </div>
       ${ann.description.split('\n').filter(line => line.trim() !== '').map(line => `<p class="detail-text annotation-line">${renderTagged(line)}</p>`).join('')}
     </div>`;
-}
-
-function closeDetail() {
-  state.selected = null;
-  refreshSelection();
-  renderDetail();
 }
 
 function closeExplanation() {
@@ -685,28 +667,6 @@ function showAnnotation(id, para) {
   renderExplanation();
 }
 
-function refreshSelection() {
-  document.querySelectorAll('.rhyme-para').forEach(el => {
-    el.classList.toggle('selected', parseInt(el.dataset.index, 10) === state.selected);
-  });
-  const titleH2 = document.querySelector('.chapter-title h2.clickable');
-  if (titleH2) titleH2.classList.toggle('selected', state.selected === 'title');
-}
-
-function selectParagraph(i) {
-  const p = state.chapterData.paragraphs[i];
-  if (!p.rhyme) return;
-  state.selected = (state.selected === i) ? null : i;
-  refreshSelection();
-  renderDetail();
-}
-
-function selectTitle() {
-  state.selected = (state.selected === 'title') ? null : 'title';
-  refreshSelection();
-  renderDetail();
-}
-
 function renderChapter() {
   const data = state.chapterData;
   const chapterIndex = state.main.chapters.findIndex(c => c.n === data.n);
@@ -714,7 +674,6 @@ function renderChapter() {
   const next = chapterIndex >= 0 && chapterIndex < state.main.chapters.length - 1
     ? state.main.chapters[chapterIndex + 1].n
     : null;
-  state.selected = null;
   state.annotationId = null;
   state.annotationPara = null;
 
@@ -722,9 +681,10 @@ function renderChapter() {
     if (n === null) return '';
     const meta = state.main.chapters.find(c => c.n === n);
     if (!meta) return '';
-    const cls = meta.rhyme === 0 ? 'nav-link untranslated' : 'nav-link';
-    const suffix = meta.rhyme === 0 ? ' <span class="nav-tag">(untranslated)</span>' : '';
-    return `<a class="${cls}" href="?ch=${n}">${label}${suffix}</a>`;
+    if (meta.prose === 0) {
+      return `<span class="nav-link untranslated">${label} <span class="nav-tag">(untranslated)</span></span>`;
+    }
+    return `<a class="nav-link" href="?ch=${n}">${label}</a>`;
   };
   const navHtml = `
     <div class="chapter-nav">
@@ -732,57 +692,47 @@ function renderChapter() {
       <span>${chapterLink(next, 'Chapter ' + next + ' &rarr;')}</span>
     </div>`;
 
-  const paras = data.paragraphs.map((p, i) => {
-    if (!p.rhyme) {
-      return `<p class="rhyme-para untranslated" data-index="${i}">—</p>`;
+  const paras = data.paragraphs.map((text, i) => {
+    if (!text) {
+      return `<p class="prose-para untranslated" data-index="${i}">—</p>`;
     }
-    if (settings.showSidebars) {
-      return `<p class="rhyme-para" data-index="${i}">${renderTagged(p.rhyme)}</p>`;
-    }
-    const plain = escapeHtml(stripTags(p.rhyme)).replace(/\n/g, '<br>');
-    return `<p class="rhyme-para no-click" data-index="${i}">${plain}</p>`;
+    const body = renderParagraph(text, settings.showAnnotations);
+    return `<p class="prose-para" data-index="${i}">${body}</p>`;
   }).join('');
 
-  const t = data.title || {};
-  const mainTitle = settings.showTitles ? t.rhyme : null;
-  const headingText = mainTitle || ('Chapter ' + data.n);
-  const titleClickable = settings.showSidebars && !!mainTitle;
-  const headingClass = titleClickable ? 'clickable' : '';
+  // Chapter titles are couplets: each half gets its own line.
+  const couplet = (settings.showTitles && data.title)
+    ? `<p class="chapter-couplet">${titleHalves(data.title).map(escapeHtml).join('<br>')}</p>`
+    : '';
   const titleHtml = `
     <div class="chapter-title">
-      <h2 class="${headingClass}">${escapeHtml(headingText)}</h2>
+      <h2>Chapter ${data.n}</h2>
+      ${couplet}
     </div>`;
 
-  const layoutClass = 'chapter-layout';
-  const sidebars = settings.showSidebars
-    ? `<aside class="detail-panel" id="detail"></aside>
-       <aside class="explanation-panel" id="explanation"></aside>`
+  const sidebar = settings.showAnnotations
+    ? '<aside class="explanation-panel" id="explanation"></aside>'
     : '';
 
   app.innerHTML = `
     ${navHtml}
-    <div class="${layoutClass}">
-      ${sidebars}
-      <div class="rhyme-column">${titleHtml}${paras}</div>
+    <div class="chapter-layout">
+      ${sidebar}
+      <div class="prose-column">${titleHtml}${paras}</div>
     </div>
     ${navHtml}`;
 
-  if (settings.showSidebars) {
-    renderDetail();
-    renderExplanation();
-  }
+  if (settings.showAnnotations) renderExplanation();
 }
 
-// Single delegated handler: tag clicks (in rhyme or annotation panel) show
-// the annotation; non-tag clicks on a translated rhyme paragraph reveal
-// the original/prose pair.
+// Single delegated handler: clicking a tag (in the text or inside the
+// annotation panel) shows that annotation.
 app.addEventListener('click', (e) => {
-  if (!settings.showSidebars) return;
+  if (!settings.showAnnotations) return;
   if (e.target.closest('a')) return;  // let external/internal links navigate
   const closeButton = e.target.closest('[data-close-panel]');
   if (closeButton) {
     e.stopPropagation();
-    if (closeButton.dataset.closePanel === 'detail') closeDetail();
     if (closeButton.dataset.closePanel === 'explanation') closeExplanation();
     return;
   }
@@ -792,20 +742,9 @@ app.addEventListener('click', (e) => {
     // Resolve relative to the paragraph the tag sits in. Cross-reference
     // tags inside the annotation panel have no enclosing paragraph; they
     // reuse the paragraph context already in state.
-    const para = tag.closest('.rhyme-para');
+    const para = tag.closest('.prose-para');
     const idx = para ? parseInt(para.dataset.index, 10) : NaN;
     showAnnotation(tag.dataset.id, Number.isFinite(idx) ? idx + 1 : undefined);
-    return;
-  }
-  if (e.target.closest('.chapter-title h2.clickable')) {
-    selectTitle();
-    return;
-  }
-  const para = e.target.closest('.rhyme-para');
-  if (para
-      && !para.classList.contains('untranslated')
-      && !para.classList.contains('no-click')) {
-    selectParagraph(parseInt(para.dataset.index, 10));
   }
 });
 
@@ -826,7 +765,7 @@ app.addEventListener('click', (e) => {
     });
   };
   wireCheckbox('show-titles', 'showTitles', 'showTitles');
-  wireCheckbox('show-sidebars', 'showSidebars', 'showSidebars');
+  wireCheckbox('show-annotations', 'showAnnotations', 'showAnnotations');
 
   const closeAll = () => {
     document.querySelectorAll('.popup-panel').forEach(p => p.hidden = true);
