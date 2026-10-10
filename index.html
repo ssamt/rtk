@@ -242,7 +242,22 @@
       padding: 0.1rem 0.2rem;
     }
     .close-panel:hover,
-    .close-panel:focus-visible { color: var(--text); }
+    .close-panel:focus-visible { color: var(--fg); }
+    /* Full-width dismiss button; replaces the small x on narrow screens. */
+    .close-annotation {
+      appearance: none;
+      display: none;
+      width: 100%;
+      margin-top: 0.9rem;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--fg);
+      font: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
     .detail-text { margin: 0; }
     .annotation-name { font-weight: bold; margin-bottom: 0.3rem; color: var(--fg); font-variant: normal; letter-spacing: normal; font-size: 1rem; }
     .annotation-line { margin: 0; }
@@ -296,13 +311,41 @@
       }
     }
     @media (max-width: 800px) {
+      /* No room for a column, and stacking the panel above the text pushes
+         the paragraph off-screen on every tap. Instead the annotation opens
+         over the text as a popover beside the word it explains. */
       .chapter-layout {
-        grid-template-areas:
-          "explanation"
-          "prose";
+        grid-template-areas: "prose";
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
+      /* Height follows the text, width stops short of both screen edges, and
+         positionExplanation() sets `top` so the box sits just above or below
+         the tapped word. Absolute (not fixed) so it scrolls with the text. */
+      .explanation-panel {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(92vw, 32rem);
+        z-index: 20;
+        margin: 0;
+        max-height: none;
+        overflow: visible;
+        padding: 0.9rem 1.1rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        box-shadow: 0 0.4rem 1.5rem rgba(0, 0, 0, 0.18);
+      }
+      /* renderExplanation() empties the panel when nothing is selected. */
+      .explanation-panel:empty { display: none; }
+      .explanation-panel .close-panel { display: none; }
+      .close-annotation { display: block; }
+      /* The contact button is pinned bottom-right at a higher z-index, so it
+         would punch through a popover that happens to open under it. */
+      body:has(.explanation-panel:not(:empty)) .contact-host { display: none; }
+      /* The map page doesn't lay out on a phone. Hidden until it's rebuilt. */
+      .contact-host a[href="map.html"] { display: none; }
     }
   </style>
 </head>
@@ -330,7 +373,7 @@
         <div class="settings-note">Main text only.</div>
       </div>
       <div class="settings-row">
-        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 74 KB</span>)</a>
+        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 77 KB</span>)</a>
         <div class="settings-note">Main text with annotations.</div>
       </div>
     </div>
@@ -448,6 +491,7 @@ const state = {
   chapterData: null,
   annotationId: null,  // id of currently displayed annotation
   annotationPara: null, // 1-based paragraph the displayed annotation was opened from
+  annotationAnchor: null, // the .tag element it was opened from (mobile positioning)
 };
 
 const settings = {
@@ -618,6 +662,7 @@ function renderExplanation() {
   const ann = resolveAnnotation(id, state.annotationPara);
   if (!ann) {
     panel.innerHTML = '<div class="detail-empty">No annotation found.</div>';
+    positionExplanation();
     return;
   }
   panel.innerHTML = `
@@ -627,11 +672,36 @@ function renderExplanation() {
         <button type="button" class="close-panel" data-close-panel="explanation" aria-label="Close annotation panel" title="Close">&times;</button>
       </div>
       ${ann.description.split('\n').filter(line => line.trim() !== '').map(line => `<p class="detail-text annotation-line">${renderTagged(line)}</p>`).join('')}
+      <button type="button" class="close-annotation" data-close-panel="explanation">Close</button>
     </div>`;
+  positionExplanation();
+}
+
+// Narrow screens show the panel as a popover anchored to the tapped tag
+// instead of a column, so its `top` has to be computed after each render.
+const MOBILE = window.matchMedia('(max-width: 800px)');
+
+function positionExplanation() {
+  const panel = document.getElementById('explanation');
+  if (!panel) return;
+  panel.style.top = '';
+  if (!MOBILE.matches || !state.annotationId) return;
+  const anchor = state.annotationAnchor;
+  if (!anchor || !anchor.isConnected) return;
+
+  const rect = anchor.getBoundingClientRect();
+  const gap = 8;
+  const height = panel.offsetHeight;
+  // Prefer below; go above only when that leaves more of the box on screen.
+  const roomBelow = window.innerHeight - rect.bottom;
+  const below = roomBelow >= height + gap || roomBelow >= rect.top;
+  const viewportTop = below ? rect.bottom + gap : rect.top - height - gap;
+  panel.style.top = Math.max(gap, viewportTop + window.scrollY) + 'px';
 }
 
 function closeExplanation() {
   state.annotationId = null;
+  state.annotationAnchor = null;
   renderExplanation();
 }
 
@@ -650,19 +720,19 @@ function resolveAnnotation(id, para) {
   return { name: chosen.name || ann.name, description: chosen.description };
 }
 
-function showAnnotation(id, para) {
+function showAnnotation(id, para, anchor) {
   // Clicking the already-open annotation deselects it — unless this click
   // resolves to a different (e.g. later) version, in which case open that.
   if (state.annotationId === id) {
     const current = resolveAnnotation(id, state.annotationPara);
     const next = resolveAnnotation(id, para);
     if (current && next && current.description === next.description) {
-      state.annotationId = null;
-      renderExplanation();
+      closeExplanation();
       return;
     }
   }
   if (typeof para === 'number') state.annotationPara = para;
+  if (anchor) state.annotationAnchor = anchor;
   state.annotationId = id;
   renderExplanation();
 }
@@ -676,6 +746,7 @@ function renderChapter() {
     : null;
   state.annotationId = null;
   state.annotationPara = null;
+  state.annotationAnchor = null;
 
   const chapterLink = (n, label) => {
     if (n === null) return '';
@@ -744,9 +815,14 @@ app.addEventListener('click', (e) => {
     // reuse the paragraph context already in state.
     const para = tag.closest('.prose-para');
     const idx = para ? parseInt(para.dataset.index, 10) : NaN;
-    showAnnotation(tag.dataset.id, Number.isFinite(idx) ? idx + 1 : undefined);
+    // A cross-reference tag inside the panel would anchor the popover to
+    // itself, so keep the prose tag the panel was opened from.
+    const anchor = tag.closest('.explanation-panel') ? null : tag;
+    showAnnotation(tag.dataset.id, Number.isFinite(idx) ? idx + 1 : undefined, anchor);
   }
 });
+
+window.addEventListener('resize', positionExplanation);
 
 // Corner toolbar and contact popovers.
 (() => {
@@ -790,6 +866,11 @@ app.addEventListener('click', (e) => {
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.popup-host, .contact-host')) closeAll();
+    // Tag clicks and the close button both stopPropagation, so anything that
+    // reaches here is outside them: dismiss unless the click was in the panel.
+    if (MOBILE.matches && state.annotationId && !e.target.closest('.explanation-panel')) {
+      closeExplanation();
+    }
   });
 })();
 
