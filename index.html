@@ -104,22 +104,67 @@
     a.icon-button { text-decoration: none; }
     .icon-button:hover { background: var(--bg); }
     .icon-button svg { width: 1.15rem; height: 1.15rem; display: block; }
-    /* "opens in a new tab" cue: small external-link badge on the icon corner */
-    .icon-button.external { position: relative; }
-    .icon-button.external::after {
-      content: "\2197";          /* ↗ */
+    /* ---- map overlay ---- */
+    /* Built by JS on the first click of the map icon, so map.html and its
+       large SVG are not fetched until the reader asks for the map. */
+    .map-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.45);
+    }
+    /* Hidden with visibility, not display: a display:none iframe collapses to
+       zero size, and the map would lose its zoom and position. */
+    .map-overlay[hidden] { display: block; visibility: hidden; }
+    .annotation-line.map-line { margin-top: 0.7rem; font-size: 0.9rem; }
+    .map-overlay-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    .map-overlay iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .map-overlay-close {
       position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 0.95rem;
-      height: 0.95rem;
-      font-size: 0.7rem;
-      line-height: 0.95rem;
-      text-align: center;
-      border-radius: 50%;
-      background: var(--link);
-      color: #fff;
-      box-shadow: 0 0 0 1.5px var(--bg);
+      top: 0.6rem;
+      right: 0.6rem;
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+    /* ---- territory still ---- */
+    /* Same overlay as the map, but the box shrinks to fit one image: the
+       still of who held what, chosen per chapter (mapYear in the data). */
+    .icon-button[hidden] { display: none; }
+    .map-overlay.still-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .still-overlay .map-overlay-box { width: auto; height: auto; }
+    .still-overlay img {
+      display: block;
+      max-width: calc(100vw - 4rem);
+      max-height: calc(100vh - 6.5rem);
+    }
+    .still-caption {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: var(--bg);
+      border-top: 1px solid var(--border);
     }
     .popup-panel {
       position: absolute;
@@ -346,6 +391,9 @@
       body:has(.explanation-panel:not(:empty)) .contact-host { display: none; }
       /* The map page doesn't lay out on a phone. Hidden until it's rebuilt. */
       .contact-host a[href="map.html"] { display: none; }
+      #territory-toggle { display: none; }
+      .map-overlay, .map-overlay[hidden] { display: none; }
+      .map-link, .annotation-line.map-line { display: none; }
     }
   </style>
 </head>
@@ -369,11 +417,11 @@
     </button>
     <div class="popup-panel" id="download-panel" hidden>
       <div class="settings-row">
-        <a href="data/book.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size" data-size-of="data/book.txt">, 176 KB</span>)</a>
+        <a href="data/book.txt" download="romance-of-the-three-kingdoms.txt">Plain text (.txt<span class="dl-size" data-size-of="data/book.txt">, 248 KB</span>)</a>
         <div class="settings-note">Main text only.</div>
       </div>
       <div class="settings-row">
-        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 319 KB</span>)</a>
+        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 446 KB</span>)</a>
         <div class="settings-note">Main text with annotations.</div>
       </div>
     </div>
@@ -433,7 +481,7 @@
 </div>
 
 <div class="contact-host">
-  <a class="icon-button external" href="map.html" target="_blank" rel="noopener"
+  <a class="icon-button" id="map-toggle" href="map.html"
      aria-label="Map" title="Map">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -443,6 +491,15 @@
       <line x1="15" y1="6" x2="15" y2="21"/>
     </svg>
   </a>
+  <button type="button" class="icon-button" id="territory-toggle"
+          aria-label="Territories" title="Territories" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <path d="M5 22V3"/>
+      <path d="M5 4h13l-3 4.5 3 4.5H5"/>
+    </svg>
+  </button>
   <button type="button" class="icon-button" id="units-toggle"
           aria-label="Chinese units" title="Chinese units">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -509,9 +566,15 @@ function stripTags(text) {
   return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
 }
 
+// The map exists only where its icon does: the standalone build strips it.
+const MAP_ENABLED = !!document.getElementById('map-toggle');
+// A line of an annotation that is nothing but a map link.
+const MAP_LINE = /^\s*\[[^\]]+\]\(map:[^)]+\)\s*$/;
+
 // Render text containing [display](target) markers into HTML. If target
-// is an http(s) URL, emit an external link; otherwise an internal
-// annotation tag.
+// is an http(s) URL, emit an external link; if it is map:<place> (see
+// focusPlace in map.html), a link that opens the map on that place;
+// otherwise an internal annotation tag.
 function renderTagged(text) {
   const re = /\[([^\]]+)\]\(([^)]+)\)/g;
   let html = '';
@@ -523,6 +586,11 @@ function renderTagged(text) {
     const target = m[2];
     if (/^https?:\/\//i.test(target)) {
       html += `<a class="external" href="${escapeHtml(target)}" target="_blank" rel="noopener noreferrer">${surface}</a>`;
+    } else if (target.startsWith('map:')) {
+      const place = target.slice(4);
+      if (MAP_ENABLED) {
+        html += `<a class="map-link" href="map.html?loc=${encodeURIComponent(place)}" data-map="${escapeHtml(place)}">${surface}</a>`;
+      }
     } else {
       html += `<span class="tag" data-id="${escapeHtml(target)}">${surface}</span>`;
     }
@@ -671,7 +739,7 @@ function renderExplanation() {
         <span class="annotation-name">${escapeHtml(ann.name)}</span>
         <button type="button" class="close-panel" data-close-panel="explanation" aria-label="Close annotation panel" title="Close">&times;</button>
       </div>
-      ${ann.description.split('\n').filter(line => line.trim() !== '').map(line => `<p class="detail-text annotation-line">${renderTagged(line)}</p>`).join('')}
+      ${ann.description.split('\n').filter(line => line.trim() !== '' && (MAP_ENABLED || !MAP_LINE.test(line))).map(line => `<p class="detail-text annotation-line${MAP_LINE.test(line) ? ' map-line' : ''}">${renderTagged(line)}</p>`).join('')}
       <button type="button" class="close-annotation" data-close-panel="explanation">Close</button>
     </div>`;
   positionExplanation();
@@ -794,6 +862,24 @@ function renderChapter() {
     ${navHtml}`;
 
   if (settings.showAnnotations) renderExplanation();
+  syncTerritoryButton();
+}
+
+// The year of the territory still attached to the open chapter, if any. The
+// stills are separate files, so the standalone book has none.
+function territoryYear() {
+  if (STANDALONE || !state.chapter || !state.chapterData) return null;
+  return state.chapterData.mapYear || null;
+}
+
+function syncTerritoryButton() {
+  const button = document.getElementById('territory-toggle');
+  const year = territoryYear();
+  button.hidden = !year;
+  if (year) {
+    button.title = `Territories, ${year}`;
+    button.setAttribute('aria-label', button.title);
+  }
 }
 
 // Single delegated handler: clicking a tag (in the text or inside the
@@ -871,6 +957,150 @@ window.addEventListener('resize', positionExplanation);
     if (MOBILE.matches && state.annotationId && !e.target.closest('.explanation-panel')) {
       closeExplanation();
     }
+  });
+})();
+
+// Map overlay. The icon is a plain link to map.html (so ctrl/middle-click
+// still opens it in a tab); an ordinary click opens the map over this page.
+// The standalone build strips the icon, and this block then does nothing.
+(() => {
+  const toggle = document.getElementById('map-toggle');
+  if (!toggle) return;
+  let overlay = null;
+  let frame = null;
+
+  const close = () => {
+    if (!overlay || overlay.hidden) return;
+    overlay.hidden = true;
+    toggle.focus();
+  };
+
+  // Keys pressed inside the iframe never reach this document, so Escape has
+  // to be listened for in there too. Same-origin on the live site; the
+  // try/catch covers file:// where the frame is treated as cross-origin.
+  const wireFrameEscape = () => {
+    try {
+      frame.contentWindow.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !e.defaultPrevented) close();
+      });
+    } catch (_) {}
+  };
+
+  const build = (place) => {
+    overlay = document.createElement('div');
+    overlay.className = 'map-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Map');
+    overlay.innerHTML = `
+      <div class="map-overlay-box">
+        <iframe title="Map of Han provinces and commanderies"></iframe>
+        <button type="button" class="icon-button map-overlay-close"
+                aria-label="Close map" title="Close">&times;</button>
+      </div>`;
+    frame = overlay.querySelector('iframe');
+    frame.addEventListener('load', wireFrameEscape);
+    frame.src = mapUrl(place);
+    overlay.querySelector('.map-overlay-close').addEventListener('click', close);
+    // A click on the dimmed margin closes; a wheel there must not scroll the
+    // text underneath.
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.addEventListener('wheel', (e) => {
+      if (e.target === overlay) e.preventDefault();
+    }, { passive: false });
+    document.body.appendChild(overlay);
+  };
+
+  const mapUrl = (place) =>
+    'map.html' + (place ? '?loc=' + encodeURIComponent(place) : '');
+
+  // Open the overlay, optionally focused on one place ("Ji province"). The
+  // first open passes the place in the URL; later ones call into the loaded
+  // map so it keeps its state and nothing reloads.
+  const open = (place) => {
+    if (!overlay) {
+      build(place);
+    } else {
+      overlay.hidden = false;
+      if (place) {
+        try { frame.contentWindow.focusPlace(place); }
+        catch (_) { frame.src = mapUrl(place); }
+      }
+    }
+    overlay.hidden = false;
+    frame.focus();
+  };
+
+  const plainClick = (e) =>
+    !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0);
+
+  toggle.addEventListener('click', (e) => {
+    if (!plainClick(e)) return;
+    e.preventDefault();
+    open();
+  });
+
+  // "Show on map" links inside annotations (see renderTagged).
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a.map-link');
+    if (!link || !plainClick(e)) return;
+    e.preventDefault();
+    open(link.dataset.map);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+})();
+
+// Territory still: one image of who held what, for the open chapter. Built
+// and fetched on the first click, like the map.
+(() => {
+  const toggle = document.getElementById('territory-toggle');
+  const SOURCE = 'https://commons.wikimedia.org/wiki/File:Three_Kingdoms_timelapse.gif';
+  let overlay = null;
+
+  const close = () => {
+    if (!overlay || overlay.hidden) return;
+    overlay.hidden = true;
+    toggle.focus();
+  };
+
+  const build = () => {
+    overlay = document.createElement('div');
+    overlay.className = 'map-overlay still-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Territories');
+    overlay.innerHTML = `
+      <div class="map-overlay-box">
+        <img alt="">
+        <div class="still-caption">
+          <a class="external" href="${SOURCE}" target="_blank" rel="noopener noreferrer">Map source</a>
+        </div>
+        <button type="button" class="icon-button map-overlay-close"
+                aria-label="Close" title="Close">&times;</button>
+      </div>`;
+    overlay.querySelector('.map-overlay-close').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    // Nothing in here scrolls, so a wheel must not move the text underneath.
+    overlay.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+    document.body.appendChild(overlay);
+  };
+
+  toggle.addEventListener('click', () => {
+    const year = territoryYear();
+    if (!year) return;
+    if (!overlay) build();
+    const img = overlay.querySelector('img');
+    img.src = `images/maps/territory_timelapse/stills/${year}.webp`;
+    img.alt = `Map of who held what in ${year}`;
+    overlay.hidden = false;
+    overlay.querySelector('.map-overlay-close').focus();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
   });
 })();
 

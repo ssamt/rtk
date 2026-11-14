@@ -236,6 +236,7 @@ fetch('images/maps/han_commandery/locations.json')
     places = data;
     allNames = [...new Set(data.map(p => p.name).filter(Boolean))].sort();
     statusEl.textContent = '';
+    if (pendingPlace) { const spec = pendingPlace; pendingPlace = null; focusPlace(spec); }
   })
   .catch(() => { statusEl.textContent = 'Could not load locations.json (serve the site over http, not file://).'; });
 
@@ -248,7 +249,9 @@ input.addEventListener('keydown', e => {
   else if (e.key === 'Enter' && activeIdx >= 0) {
     e.preventDefault();
     chooseSuggestion(suggestBox.querySelectorAll('li')[activeIdx].dataset.name);
-  } else if (e.key === 'Escape')  { hideSuggestions(); }
+  // preventDefault tells the reader page (which embeds this map in an overlay)
+  // that this Escape only closed the list and should not close the map too.
+  } else if (e.key === 'Escape')  { e.preventDefault(); hideSuggestions(); }
 });
 
 suggestBox.addEventListener('mousedown', e => {
@@ -281,6 +284,26 @@ function search(q) {
     `<b>${m.name}</b> — <span class="kind">${m.type}</span>` +
     `${m.capital ? ' (capital)' : ''}${which}`;
   focusOn(m);
+}
+
+// Focus one exact label, named as "<Name> <type>[ <n>]" (e.g. "Ji province",
+// "Ji city 2"). Used by the reader's "show on map" links: as ?loc=… when the
+// map is first opened, and called directly on the frame after that.
+let pendingPlace = new URLSearchParams(location.search).get('loc');
+
+function focusPlace(spec) {
+  if (!places.length) { pendingPlace = spec; return; }   // still loading
+  const m = /^(\S+) (province|commandery|city)(?: (\d+))?$/.exec((spec || '').trim());
+  const hits = m ? places.filter(p => p.name === m[1] && p.type === m[2]) : [];
+  const place = hits[m && m[3] ? m[3] - 1 : 0];
+  if (!place) { statusEl.textContent = `No location matches “${spec}”.`; return; }
+  input.value = place.name;
+  hideSuggestions();
+  lastKey = null;
+  statusEl.innerHTML =
+    `<b>${place.name}</b> — <span class="kind">${place.type}</span>` +
+    `${place.capital ? ' (capital)' : ''}`;
+  focusOn(place);
 }
 
 function focusOn(loc) {
