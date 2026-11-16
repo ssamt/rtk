@@ -447,7 +447,7 @@ function applyZoom() {
   mapImg.style.transform = `scale(${zoom})`;
 }
 
-// keep the base size in sync with the window; preserve the on-screen center
+// keep the base size in sync with the window
 let resizeTimer = null;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);

@@ -249,9 +249,12 @@
     .prose-column { grid-area: prose; }
     .explanation-panel { grid-area: explanation; }
     .explanation-panel {
+      /* Sticks below the fixed corner buttons, and stops above the
+         bottom-right ones: each row ends 3.2rem from its screen edge
+         (1rem inset + 2.2rem button), plus a 0.6rem gap. */
       position: sticky;
-      top: 1rem;
-      max-height: calc(100vh - 2rem);
+      top: 3.8rem;
+      max-height: calc(100vh - 7.6rem);
       overflow-y: auto;
       padding-right: 0.5rem;
       font-size: 0.95rem;
@@ -350,10 +353,6 @@
         grid-template-areas: "prose explanation";
         grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
       }
-      .explanation-panel {
-        position: static;
-        max-height: none;
-      }
     }
     @media (max-width: 800px) {
       /* No room for a column, and stacking the panel above the text pushes
@@ -386,9 +385,30 @@
       .explanation-panel:empty { display: none; }
       .explanation-panel .close-panel { display: none; }
       .close-annotation { display: block; }
-      /* The contact button is pinned bottom-right at a higher z-index, so it
-         would punch through a popover that happens to open under it. */
+      /* The buttons pinned bottom-right sit at a higher z-index, so they
+         would punch through a popover that happens to open under them. */
       body:has(.explanation-panel:not(:empty)) .contact-host { display: none; }
+      /* Pop-ups hang off their own button, so a wide one (or one under a
+         button left of the corner) runs off the screen's left edge. Pin
+         them all to the screen's right margin instead, capped at the
+         screen width. 3.6rem = the 1rem toolbar inset + 2.2rem button +
+         0.4rem gap. */
+      .popup-panel {
+        position: fixed;
+        right: 1rem;
+        max-width: calc(100vw - 2rem);
+        overflow-x: auto;
+      }
+      .corner-toolbar .popup-panel { top: 3.6rem; }
+      /* Content keeps its one-line rows and scrolls sideways rather than
+         wrapping. Each min-width is capped at the screen, since a min-width
+         beats max-width. */
+      .popup-panel { min-width: min(14rem, 100vw - 2rem); }
+      #download-panel { min-width: min(17rem, 100vw - 2rem); }
+      .units-panel { min-width: 0; top: auto; bottom: 3.6rem; }
+      /* No indent for inset verse: on a narrow column it only forces
+         more line wraps. */
+      .verse { margin-left: 0; }
       /* The map page doesn't lay out on a phone. Hidden until it's rebuilt. */
       .contact-host a[href="map.html"] { display: none; }
       #territory-toggle { display: none; }
@@ -421,7 +441,7 @@
         <div class="settings-note">Main text only.</div>
       </div>
       <div class="settings-row">
-        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 459 KB</span>)</a>
+        <a href="data/book.html" download="romance-of-the-three-kingdoms.html">Standalone page (.html<span class="dl-size" data-size-of="data/book.html">, 469 KB</span>)</a>
         <div class="settings-note">Main text with annotations.</div>
       </div>
     </div>
@@ -1057,7 +1077,7 @@ window.addEventListener('resize', positionExplanation);
 // and fetched on the first click, like the map.
 (() => {
   const toggle = document.getElementById('territory-toggle');
-  const SOURCE = 'https://commons.wikimedia.org/wiki/File:Three_Kingdoms_timelapse.gif';
+  const SOURCE = 'https://commons.wikimedia.org/wiki/File:Topographical_3K_gif.gif';
   let overlay = null;
 
   const close = () => {
